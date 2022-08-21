@@ -1,0 +1,182 @@
+﻿@using TECH.Areas.Admin.Models
+@using TECH.Utilities
+@model PagedResult<PostModelView>
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="ftco-section ftco-degree-bg">
+    <div data-v-638ed844="">
+        <div data-v-638ed844="">
+            <div data-v-fabbb9d8="" data-v-638ed844="" class="container">
+                <div data-v-fabbb9d8="" class="row">
+                    <div data-v-fabbb9d8="" class="col-lg-8">
+                        <div data-v-fabbb9d8="" class="row">
+                            @if (Model.Results != null && Model.Results.Count > 0)
+                            {
+                                @foreach (var item in Model.Results)
+                                {
+                                    <div data-v-fabbb9d8="" class="col-md-12 d-flex">
+                                    <div data-v-fabbb9d8="" class="blog-entry align-self-stretch d-md-flex">
+                                        <img data-v-fabbb9d8="" src="/product-post/@item.avatar" alt="" class="img-style block-20">
+                                        <div data-v-fabbb9d8="" class="text d-block pl-md-4">
+                                            <div data-v-fabbb9d8="" class="meta mb-3">
+                                                <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">@item.created_at.Value.ToString("dd/MM/yyyy")</span></div>
+                                                <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">@item.author_name</span></div>
+                                            </div>
+                                            <h3 data-v-fabbb9d8="" class="heading">
+                                                @item.title
+                                            </h3>
+                                            <p data-v-fabbb9d8="">@item.short_content</p>
+                                            <p data-v-fabbb9d8=""><a data-v-fabbb9d8="" href="/chi-tiet-bai-viet/@item.id" class="btn btn-primary py-2 px-3 view-more">Xem thêm</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                
+                            }
+
+                            @* <div data-v-fabbb9d8="" class="col-md-12 d-flex">
+                            <div data-v-fabbb9d8="" class="blog-entry align-self-stretch d-md-flex">
+                            <img data-v-fabbb9d8="" src="public/images/post/IOS.jpg" alt="" class="img-style block-20">
+                            <div data-v-fabbb9d8="" class="text d-block pl-md-4">
+                            <div data-v-fabbb9d8="" class="meta mb-3">
+                            <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">11/06/2022</span></div>
+                            <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">Quản trị viên</span></div>
+                            </div>
+                            <h3 data-v-fabbb9d8="" class="heading">
+                            Có nên nâng cấp iOS mới iPhone 5 cũ không?
+                            </h3>
+                            <p data-v-fabbb9d8="">Nhà sản xuất Apple luôn đưa ra những nâng cấp cho hệ điều hành trên các thiết bị của hãng. Tuy nhiên nhiều người dùng tỏ ra lo ngại vì không biết sau khi nâng cấp hệ điều hành cho những máy cũ như iPhone 5 thì có ổn định không và có khiến máy nặng nề hơn không?</p>
+                            <p data-v-fabbb9d8=""><a data-v-fabbb9d8="" href="bai-viet/co-nen-nang-cap-ios-moi-iphone-5-cu-khong" class="btn btn-primary py-2 px-3 view-more">Xem thêm</a></p>
+                            </div>
+                            </div>
+                            </div>
+                            <div data-v-fabbb9d8="" class="col-md-12 d-flex">
+                            <div data-v-fabbb9d8="" class="blog-entry align-self-stretch d-md-flex">
+                            <img data-v-fabbb9d8="" src="public/images/post/ios-16-tinh-nang-face-1.jpeg" alt="" class="img-style block-20">
+                            <div data-v-fabbb9d8="" class="text d-block pl-md-4">
+                            <div data-v-fabbb9d8="" class="meta mb-3">
+                            <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">11/06/2022</span></div>
+                            <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">Quản trị viên</span></div>
+                            </div>
+                            <h3 data-v-fabbb9d8="" class="heading">
+                            7 tính năng cực hay của iOS 16 mà Apple không hề nhắc đến tại WWDC 2022
+                            </h3>
+                            <p data-v-fabbb9d8="">Tuy nhiên, như mọi khi thì thời gian đã không cho phép Apple đi sâu vào chi tiết đầy đủ về một bản phát hành iOS mới mà hãng đã từng làm. Đơn giản là nó chứa quá nhiều tính năng mới. Những ngày sau WWDC, chúng ta luôn khám phá ra nhiều điều thú vị hơn về bản phát hành iOS tiếp theo và iOS 16 cũng không ngoại lệ. Dưới đây là 7 tính năng hay ho của hệ điều hành này không được Apple nhắc đến tại sự kiện WWDC 2022.</p>
+                            <p data-v-fabbb9d8=""><a data-v-fabbb9d8="" href="bai-viet/7-tinh-nang-cuc-hay-cua-ios-16-ma-apple-khong-he-nhac-den-tai-wwdc-2022" class="btn btn-primary py-2 px-3 view-more">Xem thêm</a></p>
+                            </div>
+                            </div>
+                            </div>
+                            <div data-v-fabbb9d8="" class="col-md-12 d-flex">
+                            <div data-v-fabbb9d8="" class="blog-entry align-self-stretch d-md-flex">
+                            <img data-v-fabbb9d8="" src="public/images/post/16.jpg" alt="" class="img-style block-20">
+                            <div data-v-fabbb9d8="" class="text d-block pl-md-4">
+                            <div data-v-fabbb9d8="" class="meta mb-3">
+                            <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">11/06/2022</span></div>
+                            <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">Quản trị viên</span></div>
+                            </div>
+                            <h3 data-v-fabbb9d8="" class="heading">
+                            iOS 16 trình làng, iPhone nào được nâng cấp?
+                            </h3>
+                            <p data-v-fabbb9d8="">Hội nghị dành cho các nhà phát triển toàn cầu (WWDC) vừa diễn ra đã giới thiệu phần mềm iOS 16 với nhiều cải tiến vượt trội. Theo đó, màn hình khóa là thay đổi lớn nhất trên iOS 16 với khả năng tùy chỉnh phông chữ, màu sắc đa dạng.</p>
+                            <p data-v-fabbb9d8=""><a data-v-fabbb9d8="" href="bai-viet/ios-16-trinh-lang-iphone-nao-duoc-nang-cap" class="btn btn-primary py-2 px-3 view-more">Xem thêm</a></p>
+                            </div>
+                            </div>
+                            </div>
+                            <div data-v-fabbb9d8="" class="col-md-12 d-flex">
+                            <div data-v-fabbb9d8="" class="blog-entry align-self-stretch d-md-flex">
+                            <img data-v-fabbb9d8="" src="public/images/post/Apple-WWDC22-iOS16-3up-hero-22-6339-2574-1654540923.jpg" alt="" class="img-style block-20">
+                            <div data-v-fabbb9d8="" class="text d-block pl-md-4">
+                            <div data-v-fabbb9d8="" class="meta mb-3">
+                            <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">09/06/2022</span></div>
+                            <div data-v-fabbb9d8=""><span data-v-fabbb9d8="">Quản trị viên</span></div>
+                            </div>
+                            <h3 data-v-fabbb9d8="" class="heading">
+                            Sững sờ trước bức thư chiêu mộ nhân tài của Steve Jobs Không chức danh không triển vọng nhưng khiến đối phương tiếc nuối cả đời
+                            </h3>
+                            <p data-v-fabbb9d8="">Dù đang ở trong thời kỳ "thất thế", Steve Jobs vẫn không đánh mất sự quyết liệt của một nhà lãnh đạo hàng đầu.</p>
+                            <p data-v-fabbb9d8=""><a data-v-fabbb9d8="" href="bai-viet/sung-so-truoc-buc-thu-chieu-mo-nhan-tai-cua-steve-jobs-khong-chuc-danh-khong-trien-vong-nhung-khien-doi-phuong-tiec-nuoi-ca-doi" class="btn btn-primary py-2 px-3 view-more">Xem thêm</a></p>
+                            </div>
+                            </div>
+                            </div>
+                            <div data-v-fabbb9d8="" class="col-md-12" style="display: none;">
+                            <div data-v-fabbb9d8="" class="alert alert-danger text-center"><span data-v-fabbb9d8="" class="text-center">Không tìm thấy bài viết nào phù hợp với tìm kiếm của bạn</span></div>
+                            </div>*@
+                        </div>
+                        @*     <nav data-v-fabbb9d8="" aria-label="...">
+                        <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link"> &lt;&lt; </a></li>
+                        <li class="page-item disabled"><a class="page-link"> &lt; </a></li>
+                        <li class="page-item active"><a class="page-link">1
+                        <span class="sr-only"></span></a>
+                        </li>
+                        <li class="page-item">
+                        <a class="page-link">
+                        2
+                        <!---->
+                        </a>
+                        </li>
+                        <li class="page-item"><a class="page-link"> &gt; </a></li>
+                        <li class="page-item"><a class="page-link"> &gt;&gt; </a></li>
+                        </ul>
+                        </nav>*@
+                    </div>
+                    
+                    <div data-v-fabbb9d8="" class="col-lg-4 sidebar">
+                        <div data-v-fabbb9d8="" class="sidebar-box">
+                            <form data-v-fabbb9d8="" action="#" class="search-form">
+                                <div data-v-fabbb9d8="" class="form-group"><span data-v-fabbb9d8="" class="icon ion-ios-search"></span> <input data-v-fabbb9d8="" type="text" placeholder="Nhập từ khoá để tìm kiếm" class="form-control"></div>
+                            </form>
+                        </div>
+                       @await Component.InvokeAsync("ProductCountForCategoryIdPostComponent")
+                       @await Component.InvokeAsync("RecentPostsComponent")
+                     @*   <div data-v-fabbb9d8="" class="sidebar-box">
+                            <h3 data-v-fabbb9d8="" class="heading">Bài viết gần đây</h3>
+                            <div data-v-fabbb9d8="" class="block-21 mb-4 d-flex">
+                                <a data-v-fabbb9d8="" class="blog-img mr-4"><img data-v-fabbb9d8="" src="public/images/post/ios-16-tinh-nang-face-1.jpeg" alt="" class="img-style"></a>
+                                <div data-v-fabbb9d8="" class="text">
+                                    <h3 data-v-fabbb9d8="" class="heading-1"><a data-v-fabbb9d8="" href="bai-viet/7-tinh-nang-cuc-hay-cua-ios-16-ma-apple-khong-he-nhac-den-tai-wwdc-2022">7 tính năng cực hay của iOS 16 mà Apple không hề nhắc đến tại WWDC 2022</a></h3>
+                                    <div data-v-fabbb9d8="" class="meta">
+                                        <div data-v-fabbb9d8=""><span data-v-fabbb9d8="" class="icon-calendar"></span>11/06/2022</div>
+                                        <div data-v-fabbb9d8=""><span data-v-fabbb9d8="" class="icon-person"></span> Quản trị viên</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-v-fabbb9d8="" class="block-21 mb-4 d-flex">
+                                <a data-v-fabbb9d8="" class="blog-img mr-4"><img data-v-fabbb9d8="" src="public/images/post/2-1654545994-689-width740height416.jpg" alt="" class="img-style"></a>
+                                <div data-v-fabbb9d8="" class="text">
+                                    <h3 data-v-fabbb9d8="" class="heading-1"><a data-v-fabbb9d8="" href="bai-viet/dem-qua-apple-da-chinh-thuc-tuyen-chien-voi-ca-mot-nganh-cong-nghiep">Đêm qua, Apple đã chính thức tuyên chiến với cả một ngành công nghiệp</a></h3>
+                                    <div data-v-fabbb9d8="" class="meta">
+                                        <div data-v-fabbb9d8=""><span data-v-fabbb9d8="" class="icon-calendar"></span>09/06/2022</div>
+                                        <div data-v-fabbb9d8=""><span data-v-fabbb9d8="" class="icon-person"></span> Quản trị viên</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-v-fabbb9d8="" class="block-21 mb-4 d-flex">
+                                <a data-v-fabbb9d8="" class="blog-img mr-4"><img data-v-fabbb9d8="" src="public/images/post/Apple-WWDC22-iOS16-3up-hero-22-6339-2574-1654540923.jpg" alt="" class="img-style"></a>
+                                <div data-v-fabbb9d8="" class="text">
+                                    <h3 data-v-fabbb9d8="" class="heading-1"><a data-v-fabbb9d8="" href="bai-viet/sung-so-truoc-buc-thu-chieu-mo-nhan-tai-cua-steve-jobs-khong-chuc-danh-khong-trien-vong-nhung-khien-doi-phuong-tiec-nuoi-ca-doi">Sững sờ trước bức thư chiêu mộ nhân tài của Steve Jobs Không chức danh không triển vọng nhưng khiến đối phương tiếc nuối cả đời</a></h3>
+                                    <div data-v-fabbb9d8="" class="meta">
+                                        <div data-v-fabbb9d8=""><span data-v-fabbb9d8="" class="icon-calendar"></span>09/06/2022</div>
+                                        <div data-v-fabbb9d8=""><span data-v-fabbb9d8="" class="icon-person"></span> Quản trị viên</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-v-fabbb9d8="" class="block-21 mb-4 d-flex">
+                                <a data-v-fabbb9d8="" class="blog-img mr-4"><img data-v-fabbb9d8="" src="public/images/post/16.jpg" alt="" class="img-style"></a>
+                                <div data-v-fabbb9d8="" class="text">
+                                    <h3 data-v-fabbb9d8="" class="heading-1"><a data-v-fabbb9d8="" href="bai-viet/ios-16-trinh-lang-iphone-nao-duoc-nang-cap">iOS 16 trình làng, iPhone nào được nâng cấp?</a></h3>
+                                    <div data-v-fabbb9d8="" class="meta">
+                                        <div data-v-fabbb9d8=""><span data-v-fabbb9d8="" class="icon-calendar"></span>11/06/2022</div>
+                                        <div data-v-fabbb9d8=""><span data-v-fabbb9d8="" class="icon-person"></span> Quản trị viên</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
