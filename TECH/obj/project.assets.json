@@ -9457,7 +9457,8 @@
       "Microsoft.EntityFrameworkCore >= 6.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.0",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.0",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.7"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.7",
+      "Newtonsoft.Json >= 13.0.1"
     ]
   },
   "packageFolders": {
@@ -9467,11 +9468,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\dien-thoai-master\\dien-thoai-master\\TECH\\TECH\\TECH.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\Website-Ban-Hang-Apple\\TECH\\TECH.csproj",
       "projectName": "TECH",
-      "projectPath": "C:\\Users\\Administrator\\Desktop\\dien-thoai-master\\dien-thoai-master\\TECH\\TECH\\TECH.csproj",
+      "projectPath": "C:\\Users\\Administrator\\Desktop\\Website-Ban-Hang-Apple\\TECH\\TECH.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Desktop\\dien-thoai-master\\dien-thoai-master\\TECH\\TECH\\obj\\",
+      "outputPath": "C:\\Users\\Administrator\\Desktop\\Website-Ban-Hang-Apple\\TECH\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -9521,6 +9522,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[6.0.7, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.1, )"
           }
         },
         "imports": [
