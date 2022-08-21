@@ -520,3 +520,14 @@ C:\Users\Administrator\Desktop\dien-thoai-master\dien-thoai-master\TECH\TECH\obj
 C:\Users\Administrator\Desktop\dien-thoai-master\dien-thoai-master\TECH\TECH\obj\Debug\net6.0\TECH.pdb
 C:\Users\Administrator\Desktop\dien-thoai-master\dien-thoai-master\TECH\TECH\obj\Debug\net6.0\TECH.genruntimeconfig.cache
 C:\Users\Administrator\Desktop\dien-thoai-master\dien-thoai-master\TECH\TECH\obj\Debug\net6.0\ref\TECH.dll
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.AssemblyInfoInputs.cache
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.AssemblyInfo.cs
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.RazorAssemblyInfo.cache
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.RazorAssemblyInfo.cs
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.dll
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\refint\TECH.dll
+C:\Users\Administrator\Desktop\Website-Ban-Hang-Apple\TECH\obj\Debug\net6.0\TECH.pdb
