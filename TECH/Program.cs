@@ -37,6 +37,8 @@ builder.Services.AddScoped<ICityRepository, CityRepository>();
 builder.Services.AddScoped<IDistrictsRepository, DistrictsRepository>();
 builder.Services.AddScoped<IWardsRepository, WardsRepository>();
 builder.Services.AddScoped<IFeeRepository, FeeRepository>();
+builder.Services.AddScoped<ICartsRepository, CartsRepository>();
+builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
 
 
 builder.Services.AddScoped<IAppUserService, AppUserService>();
@@ -50,6 +52,7 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IDistrictsService, DistrictsService>();
 builder.Services.AddScoped<IWardsService, WardsService>();
 builder.Services.AddScoped<IFeeService, FeeService>();
+builder.Services.AddScoped<ICartsService, CartsService>();
 
 //builder.Services.AddMemoryCache();
 
@@ -74,6 +77,11 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapAreaControllerRoute(
+     name: "TrangQuanTri",
+     areaName: "Admin",
+     pattern: "admin",
+     defaults: new { controller = "Home", action = "Index" });
 
     endpoints.MapAreaControllerRoute(
        name: "TaiKhoan",
@@ -147,6 +155,10 @@ app.UseEndpoints(endpoints =>
       pattern: "admin/quan-ly-phi-van-chuyen",
       defaults: new { controller = "Fee", action = "Index" });
 
+  
+
+    
+
 
     endpoints.MapAreaControllerRoute(
        name: "admin",
@@ -163,6 +175,22 @@ app.UseEndpoints(endpoints =>
     //    defaults: new { controller = "Topic", action = "List" });
 
     endpoints.MapControllerRoute(
+       name: "SanPhamChiTiet",
+       pattern: "/chi-tiet-san-pham/{*productId}",
+       defaults: new { controller = "Product", action = "ProductDetail" });
+
+    endpoints.MapControllerRoute(
+      name: "GioHang",
+      pattern: "/gio-hang",
+      defaults: new { controller = "Carts", action = "Index" });
+
+
+    endpoints.MapControllerRoute(
+      name: "DanhSachSanPhamW",
+      pattern: "/san-pham/{*categoryId}",
+      defaults: new { controller = "Product", action = "ProductCategory" });
+
+    endpoints.MapControllerRoute(
        name: "user",
        pattern: "/dang-ky",
        defaults: new { controller = "Users", action = "Register" });
@@ -171,6 +199,56 @@ app.UseEndpoints(endpoints =>
        name: "userlogin",
        pattern: "/dang-nhap",
        defaults: new { controller = "Users", action = "Login" });
+    endpoints.MapControllerRoute(
+      name: "GioiThieu",
+      pattern: "/gioi-thieu",
+      defaults: new { controller = "Home", action = "About" });
+
+    endpoints.MapControllerRoute(
+      name: "CartPayment",
+      pattern: "/thanh-toan",
+      defaults: new { controller = "Carts", action = "DeletailOrder" });
+
+    endpoints.MapControllerRoute(
+     name: "BaiViet",
+     pattern: "/bai-viet",
+     defaults: new { controller = "Post", action = "Index" });
+
+    endpoints.MapControllerRoute(
+    name: "ChiTietBaiViet",
+    pattern: "/chi-tiet-bai-viet/{*postId}",
+    defaults: new { controller = "Post", action = "DetailPost" });
+
+    endpoints.MapControllerRoute(
+    name: "HoSoCaNhan",
+    pattern: "/thong-tin-ca-nhan",
+    defaults: new { controller = "Users", action = "Profile" });
+
+    endpoints.MapControllerRoute(
+    name: "LichSuMuaHang",
+    pattern: "/lich-su-don-hang",
+    defaults: new { controller = "Carts", action = "HistoryOrder" });
+
+    endpoints.MapControllerRoute(
+  name: "LienHeWe",
+  pattern: "/lien-he-voi-chung-toi",
+  defaults: new { controller = "Home", action = "Contact" });
+
+
+   endpoints.MapControllerRoute(
+   name: "DangXuat",
+   pattern: "/dang-xuat",
+   defaults: new { controller = "Users", action = "LogOut" });
+
+    endpoints.MapControllerRoute(
+  name: "TimKiemProduct",
+  pattern: "/san-pham-tim-kiem/{*textSearch}",
+  defaults: new { controller = "Product", action = "ProductSearch" });
+
+    endpoints.MapControllerRoute(
+   name: "DoiMatKhauWeb",
+   pattern: "/doi-mat-khau",
+   defaults: new { controller = "Users", action = "ChangePass" });
 
     endpoints.MapControllerRoute(
         name: "default",
