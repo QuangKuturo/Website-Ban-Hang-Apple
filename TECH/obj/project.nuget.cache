@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l0ts+naAEiBb3/FWk8kUjJKV20q66MBI2K9/SX6teb0Sj7MjbtB69R574d6fhmy4et0mtSFbxea7/s3bhZWdPQ==",
+  "dgSpecHash": "4qan1MBbUdzNd2TDXyAqH+pCvGx4fCVqdq7Rv71+AUCFYHzEvhf0A+oKfVtxDH8Z/d8ZXVouGIfII6nLZePG1Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\Desktop\\dien-thoai-master\\dien-thoai-master\\TECH\\TECH\\TECH.csproj",
+  "projectFilePath": "C:\\Users\\Administrator\\Desktop\\Website-Ban-Hang-Apple\\TECH\\TECH.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
