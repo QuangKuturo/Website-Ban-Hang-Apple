@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace TECH.Service
         OrdersModelView GetByid(int id);
         bool Add(OrdersModelView view);
         bool Update(OrdersModelView view);
+        bool UpdateReview(int orderId, int review);
         bool Deleted(int id);
         void Save();
         bool UpdateStatus(int id, int status);
@@ -48,6 +50,7 @@ namespace TECH.Service
         {
             var data = _orderDetailsRepository.FindAll().Where(p => p.order_id == orderId).Select(p => new OrdersDetailModelView()
             {
+                id = p.id,
                 order_id = p.order_id,
                 product_id = p.product_id,
                 color = p.color,
@@ -234,7 +237,27 @@ namespace TECH.Service
             return false;
         }
 
-      public  bool UpdateStatus(int id, int status)
+       public bool UpdateReview(int orderId, int review)
+        {
+            try
+            {
+                var dataServer = _ordersRepository.FindById(orderId);
+                if (dataServer != null)
+                {
+                    dataServer.review = review;
+                    _ordersRepository.Update(dataServer);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+        public  bool UpdateStatus(int id, int status)
         {
             try
             {
@@ -299,16 +322,23 @@ namespace TECH.Service
             {
                 var query = _ordersRepository.FindAll();
 
+                if (OrdersModelViewSearch.user_ids != null && OrdersModelViewSearch.user_ids.Count > 0)
+                {
+                    query = query.Where(c => OrdersModelViewSearch.user_ids.Contains(c.user_id.Value));
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(OrdersModelViewSearch.name))
+                    {
+                        query = query.Where(c => c.code.ToLower().Contains(OrdersModelViewSearch.name.ToLower().Trim()));
+                    }
+                }
+
                 if (OrdersModelViewSearch.payment.HasValue)
                 {
                     query = query.Where(c => c.payment == OrdersModelViewSearch.payment.Value);
                 }
                 
-                if (!string.IsNullOrEmpty(OrdersModelViewSearch.name))
-                {
-                    query = query.Where(c => c.code == OrdersModelViewSearch.name);
-                }
-
                 if (OrdersModelViewSearch.status.HasValue)
                 {
                     query = query.Where(c => c.status == OrdersModelViewSearch.status.Value);

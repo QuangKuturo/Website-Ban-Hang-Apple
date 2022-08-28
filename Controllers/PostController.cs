@@ -4,6 +4,7 @@ using TECH.Areas.Admin.Models;
 using TECH.Areas.Admin.Models.Search;
 using TECH.Models;
 using TECH.Service;
+using TECH.Utilities;
 
 namespace TECH.Controllers
 {
@@ -47,7 +48,35 @@ namespace TECH.Controllers
 
             return View(model);
         }
-        
+        //public IActionResult PostSearch(string textSearch)
+        //{
+        //    var data = new PagedResult<PostModelView>();
+        //    if (!string.IsNullOrEmpty(textSearch))
+        //    {
+        //        var ProductModelViewSearch = new PostsViewModelSearch();
+        //        ProductModelViewSearch.name = textSearch;
+        //        ProductModelViewSearch.PageIndex = 1;
+        //        ProductModelViewSearch.PageSize = 20;
+        //        data = _postsService.GetAllPaging(ProductModelViewSearch);
+        //    }
+        //    return View(data);
+        //}
+
+        public IActionResult PostSearch(string textSearch)
+        {
+            var data = new PagedResult<PostModelView>();
+            if (!string.IsNullOrEmpty(textSearch))
+            {
+                var ProductModelViewSearch = new PostsViewModelSearch();
+                ProductModelViewSearch.name = textSearch;
+                ProductModelViewSearch.PageIndex = 1;
+                ProductModelViewSearch.PageSize = 20;
+                data = _postsService.GetAllPaging(ProductModelViewSearch);
+            }
+            return PartialView("PostSearch", data);
+        }
+
+
 
     }
 }

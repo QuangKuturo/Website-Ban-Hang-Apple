@@ -4,6 +4,27 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style type="text/css">
+    input.error {
+        border-color: #f00 !important;
+    }
+
+    label.error {
+        clear: both;
+        color: #f00;
+        display: block;
+        text-align: left;
+        margin: unset;
+        padding: unset;
+        font-size: 13px;
+        font-weight: unset !important;
+        background: unset;
+    }
+    .form-group[class*='has-icon-'] .form-control-icon{
+        transform: unset !important;
+        top: 10% !important;
+    }
+</style>
 <section id="lien-he-voi-chung-toi" class="ftco-section">
    <div class="parallax-img d-flex align-items-center">
       <div class="container">
@@ -13,11 +34,15 @@
                <div class="row d-flex justify-content-center mt-5">
                   <div class="col-md-8">
                      <form action="#" method="#" id="Accuracy">
-                        <div class="results"></div>
+                        <div class="results" style="display:none">
+                             <div class="alert alert-danger">
+                             Mã xác thực không đúng
+                           </div>
+                        </div>
                         <div class="row">
                            <div class="col-md-12">
                               <div class="alert alert-warning">
-                                 <p>Mã OTP được gửi tới <span class="text-email"></span> </p>
+                                 <p>Mã OTP được gửi tới <span class="text-email">@Model.email</span> </p>
                               </div>
                            </div>
                            <div class="col-md-12">
@@ -40,42 +65,27 @@
     <script src="~/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#formUserDetail").validate({
+            $("#Accuracy").validate({
                 rules:
                 {
-                    current_password: {
+                    verify: {
                         required: true,
-                    },
-                    new_password: {
-                        required: true
-                    },
+                    }
 
                 },
                 messages:
                 {
-                    current_password: {
-                        required: "Bạn chưa nhập mật khẩu hiện tại",
-                    },
-                    new_password: {
-                        required: "bạn chưa nhập mật khẩu mới",
-                    },
+                    verify: {
+                        required: "Bạn chưa nhập mã xác thực",
+                    }
                 },
-                submitHandler: function(form) {
-
-                    var userView = {
-                        id: $("#userId").val(),
-                        current_password : $("#current_password").val(),
-                        new_password:$("#new_password").val(),
-                    };
+                submitHandler: function(form) {                 
                     $.ajax({
-                        url: '/Admin/AppUsers/ChangeServerPassWord',
-                        type: 'POST',
+                        url: '/Users/CheckAccuracy',
+                        type: 'GET',
                         dataType: 'json',
                         data: {
-                            userId: $("#userId").val(),
-                            current_password: $("#current_password").val(),
-                            new_password: $("#new_password").val()
-
+                            codeaccuracy: $("#verify").val()
                         },
                         beforeSend: function() {
                             //Loading('show');
@@ -85,7 +95,7 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                window.location.href = "/home";
+                                window.location.href = "/tao-mat-khau-moi";
                               
                             }
                             else {

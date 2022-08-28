@@ -21,6 +21,7 @@ namespace TECH.Service
         bool Deleted(int id);
         void Save();
         bool UpdateStatus(int id, int status);
+        ProductViews GetReviewForProduct(int productId);
     }
 
     public class ReviewsService : IReviewsService
@@ -65,7 +66,7 @@ namespace TECH.Service
                         order_id = view.order_id,
                         comment = view.comment,
                         star = view.star,
-                        status = view.star,
+                        status = view.status,
                         created_at = DateTime.Now,                        
                     };
                     _reviewsRepository.Add(products);
@@ -144,6 +145,24 @@ namespace TECH.Service
 
             return false;
         }
+        public ProductViews GetReviewForProduct(int productId)
+        {
+            var productViews = new ProductViews();
+            var data = _reviewsRepository.FindAll(p => p.product_id == productId).Select(p => new ReviewsModelView()
+            {
+                id = p.id,
+                star = p.star
+            }).ToList();
+            if (data != null && data.Count > 0)
+            {
+                var _data = data.GroupBy(p => p.star).ToList();
+                var _dataMax = _data.MaxBy(p => p.Key);
+                var _dataCount = _dataMax.Count();
+                productViews.star = _dataMax.Key.Value;
+                productViews.review_count = _dataCount;
+            }
+            return productViews;
+        }
         public PagedResult<ReviewsModelView> GetAllPaging(ReviewsViewModelSearch ReviewsModelViewSearch)
         {
             try
@@ -154,7 +173,10 @@ namespace TECH.Service
                 {
                     query = query.Where(c => c.star == ReviewsModelViewSearch.star.Value);
                 }
-                
+                if (!string.IsNullOrEmpty(ReviewsModelViewSearch.name))
+                {
+                    query = query.Where(c => ReviewsModelViewSearch.order_ids.Contains(c.order_id.Value));
+                }
 
                 int totalRow = query.Count();
                 query = query.Skip((ReviewsModelViewSearch.PageIndex - 1) * ReviewsModelViewSearch.PageSize).Take(ReviewsModelViewSearch.PageSize);

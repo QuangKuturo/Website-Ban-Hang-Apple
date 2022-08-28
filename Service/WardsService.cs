@@ -66,7 +66,7 @@ namespace TECH.Service
         }
         public WardsModelView GetByName(string name)
         {
-            var data = _wardsRepository.FindAll(p => p.name.Contains(name)).FirstOrDefault();
+            var data = _wardsRepository.FindAll(p => p.name.ToLower().Trim().Contains(name.ToLower().Trim())).FirstOrDefault();
             if (data != null)
             {
                 var model = new WardsModelView()

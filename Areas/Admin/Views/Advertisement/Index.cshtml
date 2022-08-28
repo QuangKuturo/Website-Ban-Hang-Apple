@@ -179,10 +179,12 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        tedu.notify('Cập nhật dữ liệu thành công', 'success');                       
+                        tedu.notify('Cập nhật dữ liệu thành công', 'success');       
+                        window.location.reload();
                     }
                     else {
-                          tedu.notify('Cập nhật dữ không liệu thành công', 'success');    
+                        tedu.notify('Cập nhật dữ không liệu thành công', 'success');
+                        window.location.reload();
                     }
 
                 }

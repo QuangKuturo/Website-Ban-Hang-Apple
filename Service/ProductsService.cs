@@ -215,7 +215,7 @@ namespace TECH.Service
                 endow = p.endow,
                 type = p.type,
                 specifications = p.specifications
-            }).ToList();
+            }).Take(4).ToList();
             return data;
         }
 
@@ -255,7 +255,11 @@ namespace TECH.Service
                 
                 if (!string.IsNullOrEmpty(ProductModelViewSearch.name))
                 {
-                    query = query.Where(c => c.name == ProductModelViewSearch.name);
+                    query = query.Where(c => c.name.ToLower().Trim().Contains(ProductModelViewSearch.name.ToLower().Trim()));
+                }
+                if (ProductModelViewSearch.differentiate == 0)
+                {
+                    query = query.Where(c => c.differentiate == 0);
                 }
 
                 int totalRow = query.Count();
@@ -276,7 +280,7 @@ namespace TECH.Service
                     endow = p.endow,
                     type = p.type,
                     specifications = p.specifications
-                }).ToList();
+                }).ToList();             
               
                 var pagingData = new PagedResult<ProductModelView>
                 {
@@ -297,7 +301,7 @@ namespace TECH.Service
         {
             if (!string.IsNullOrEmpty(textSearch))
             {
-                var query = _productsRepository.FindAll().Where(p=>p.name.Contains(textSearch)).Select(p => new ProductModelView()
+                var query = _productsRepository.FindAll().Where(p=>p.name.ToLower().Contains(textSearch.ToLower().Trim())).Select(p => new ProductModelView()
                 {
                     id = p.id,
                     category_id = p.category_id,

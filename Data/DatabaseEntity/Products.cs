@@ -24,13 +24,11 @@ namespace TECH.Data.DatabaseEntity
         [Column(TypeName = "varchar(200)")]
         public string? avatar { get; set; }
 
-        [Column(TypeName = "varchar(200)")]
-        public string? price { get; set; }
+        public decimal price { get; set; }
 
         public string? color { get; set; }
 
-        [Column(TypeName = "varchar(200)")]
-        public string? quantity { get; set; }
+        public int quantity { get; set; }
 
         [Column(TypeName = "nvarchar(max)")]
         public string? short_desc { get; set; }

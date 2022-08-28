@@ -8,7 +8,7 @@
         <div data-v-0da8956e="" class="container">
             <div data-v-0da8956e="" class="row justify-content-center mb-3 pb-3">
                 <div data-v-0da8956e="" class="col-md-12 heading-section text-center">
-                    <h2 data-v-0da8956e="" class="mb-4">Sản phẩm bán chạy</h2>
+                    <h2 data-v-0da8956e="" class="mb-4">Sản phẩm mới nhất</h2>
                 </div>
             </div>
         </div>
@@ -16,14 +16,10 @@
             <div data-v-0da8956e="" class="cards">
                 @foreach (var item in Model)
                 {
-                    decimal priceStr = 0;
-                    @if (item.price.Contains(";"))
+                    string priceStr = "";
+                    @if (item.price > 0)
                                     {
-                                      priceStr = Convert.ToDecimal(item.price.Split(";")[0]);
-                                    }
-                                    else
-                                    {
-                                      priceStr =   Convert.ToDecimal(item.price);
+                            priceStr = item.price.ToString("#,###");
                                     }
 
                     <div data-v-0da8956e="" class="card product border-product">
@@ -33,9 +29,18 @@
                     </a>
                     <div data-v-0da8956e="" class="text py-3 px-3">
                         <h3 data-v-0da8956e=""><a data-v-0da8956e="" href="/chi-tiet-san-pham/@item.id" class="name-product">@item.name</a></h3>
-                        <div data-v-0da8956e="" class="price"><span data-v-0da8956e="" class="mr-2 price-color">@priceStr.ToString("#,###") <i data-v-0da8956e="">đ</i></span></div>
+                        <div data-v-0da8956e="" class="price"><span data-v-0da8956e="" class="mr-2 price-color">@priceStr <i data-v-0da8956e="">đ</i></span></div>
+                                @if (item.ProductViews != null)
+                                {
+                                    <div data-v-7b8a01fc="" class="rate">
+                                        <span data-v-7b8a01fc="">
+                                            @item.ProductViews.star  <span data-v-7b8a01fc="" class="ion-ios-star"></span><span data-v-7b8a01fc="" class="sold">&nbsp;(@item.ProductViews.review_count)</span>
+                                        </span>
+                                    </div>
+                                    <div data-v-7b8a01fc="" class="endow"><span data-v-7b8a01fc="" class="endow"></span></div>
+                                }
                         <!---->
-                        <div data-v-0da8956e="" class="endow"><span data-v-0da8956e="" class="endow">@item.specifications</span></div>
+                        @*<div data-v-0da8956e="" class="endow"><span data-v-0da8956e="" class="endow">@item.specifications</span></div>*@
                     </div>
                 </div>
                 }

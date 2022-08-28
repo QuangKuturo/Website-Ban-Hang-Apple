@@ -281,6 +281,17 @@ namespace TECH.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetAllPaging(PostsViewModelSearch postsViewModelSearch)
         {
+
+            if (postsViewModelSearch != null && !string.IsNullOrEmpty(postsViewModelSearch.name))
+            {
+                var lstAuthor = _appUserService.GetUserSearch(postsViewModelSearch.name);
+                if (lstAuthor != null && lstAuthor.Count > 0)
+                {
+                    postsViewModelSearch.author_ids = lstAuthor.Select(u => u.id).ToList();
+                }
+                
+            }
+
             var data = _postsService.GetAllPaging(postsViewModelSearch);
             foreach (var item in data.Results)
             {

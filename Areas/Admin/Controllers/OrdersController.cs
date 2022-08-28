@@ -245,7 +245,17 @@ namespace TECH.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetAllPaging(OrdersViewModelSearch ordersViewModelSearch)
         {
+            if (ordersViewModelSearch != null && !string.IsNullOrEmpty(ordersViewModelSearch.name))
+            {
+                var _user = _appUserService.GetUserSearch(ordersViewModelSearch.name.Trim());
+                if (_user != null && _user.Count > 0)
+                {
+                    ordersViewModelSearch.user_ids = _user.Select(u => u.id).ToList();
+                }
+            }
+
             var data = _ordersService.GetAllPaging(ordersViewModelSearch);
+
             foreach (var item in data.Results)
             {
                 if (item != null && item.user_id.HasValue)

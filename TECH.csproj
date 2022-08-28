@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="wwwroot\product-advertisement\" />
+    <Folder Include="wwwroot\product-post\" />
   </ItemGroup>
 
   <ItemGroup>

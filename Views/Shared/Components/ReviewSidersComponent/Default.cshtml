@@ -22,7 +22,8 @@
     }
     .reivews .item img{
             border-radius: 100%;
-                height: 8vh;
+            height: 70px !important;
+            width: 70px !important;
     }
     .bi {
     width: 1rem;
@@ -61,7 +62,13 @@
                              <p class="mb-5 pl-4 line">@item.comment </p>
                              <div class="row">
                                  <div data-v-5178a8ea="" data-v-e4caeaf8="" class="col-md-4">
-                                    <img data-v-5178a8ea="" data-v-e4caeaf8="" src="public/images/user/user_avatar_05f971b5ec196b8c65b75d2ef82673316291ac2ba267a.png" alt="" class="avatar-img" />
+                                    @if (item.userModelView != null && !string.IsNullOrEmpty(item.userModelView.avatar))
+                                    {
+                                        <img data-v-5178a8ea="" data-v-e4caeaf8="" src="/avartar/@item.userModelView.avatar" alt="" class="avatar-img" />
+                                    }else{
+                                        <img data-v-5178a8ea="" data-v-e4caeaf8="" src="/avartar/avatar-mac-dinh.jpg" alt="" class="avatar-img" />
+                                    }
+                                   
                                 </div>
                                 <div class="col-md-8">
                                     <p data-v-5178a8ea="" data-v-e4caeaf8="" class="name">@item.userModelView.full_name</p>

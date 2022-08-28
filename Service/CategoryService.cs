@@ -182,7 +182,7 @@ namespace TECH.Service
                 
                 if (!string.IsNullOrEmpty(CategoryModelViewSearch.name))
                 {
-                    query = query.Where(c => c.name == CategoryModelViewSearch.name);
+                    query = query.Where(c => c.name.ToLower().Trim().Contains(CategoryModelViewSearch.name.ToLower().Trim()));
                 }
 
                 int totalRow = query.Count();

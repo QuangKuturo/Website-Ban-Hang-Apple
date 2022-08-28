@@ -126,10 +126,10 @@
                                     <tbody>
                                         @foreach (var item in Model.CartsModelView)
                                         {
-                                            decimal totalPrice = item.price.Value * item.quantity.Value;
+                                            decimal totalPrice = item.price.Value;
                                             _totalPrice += totalPrice;
                                             <tr>
-                                                <td width="20%" class="text-left"><img src="../../public/images/product/CA8755F7-1424-449D-812A-9272B8323BBF.jpeg" alt="" class="img-cart" /></td>
+                                                <td width="20%" class="text-left"><img width="100px;" height="75px" src="/product-image/@item.productModelView.avatar" alt="" class="img-cart" /></td>
                                                 <td class="text-left">@item.productModelView.name</td>
                                                 <td class="text-left" style="width:60px">x @item.quantity</td>
                                                 <td class="text-left" style="text-align: right !important;">@totalPrice.ToString("#,###")<i> đ</i></td>
@@ -153,10 +153,10 @@
                                 </table>
                                 <hr />
                                 <p class="d-flex">
-                                    <span>Tạm tính</span> <span></span> <span></span> <span style="text-align: right;">@_totalPrice.ToString("#,###")<i>đ</i></span>
+                                    <span>Tạm tính</span> <span></span> <span></span> <span style="text-align: right;">@_totalPrice.ToString("#,###")<i> đ</i></span>
                                 </p>
                                 <p class="d-flex">
-                                    <span>Phí vận chuyển</span> <span class="feestr" style="text-align: right;">Chưa có phí vận chuyển</span>
+                                    <span>Phí vận chuyển</span> <span class="feestr" style="text-align: right;">0 đ</span>
                                 </p>
                                 <hr />
                                 <p class="d-flex total">
@@ -198,7 +198,7 @@
 @section Scripts{
     <script type="text/javascript">
 var self = this;
-self.payment = 1;
+self.payment = 0;
         $(document).ready(function() {
 
             GetAllCities();

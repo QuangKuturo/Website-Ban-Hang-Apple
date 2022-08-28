@@ -17,11 +17,11 @@ namespace TECH.Areas.Admin.Models
 
         public string? avatar { get; set; }
 
-        public string? price { get; set; }
+        public decimal price { get; set; }
 
         public string? color { get; set; }
 
-        public string? quantity { get; set; }
+        public int quantity { get; set; }
 
         public string? short_desc { get; set; }
 
@@ -34,12 +34,17 @@ namespace TECH.Areas.Admin.Models
         public int? status { get; set; }
 
         public int? type { get; set; }
-        public int? differentiate { get; set; }
+        public int? differentiate { get; set; } // hàng mới hay cũ
 
         public int total_product { get; set; }
+        public ProductViews ProductViews { get; set; }
     }
-   
-    
+    public class ProductViews
+    {
+        public int star { get; set; }
+        public int review_count { get; set; }
+    }
+
 
 
 }

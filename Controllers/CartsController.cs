@@ -14,15 +14,18 @@ namespace TECH.Controllers
         private readonly IOrdersService _ordersService;
         private readonly IProductsService _productsService;
         public IHttpContextAccessor _httpContextAccessor;
+        private readonly IReviewsService _reviewsService;
         public CartsController(ICartsService cartsService,
             IHttpContextAccessor httpContextAccessor,
             IOrdersService ordersService,
+            IReviewsService reviewsService,
             IProductsService productsService)
         {
             _cartsService = cartsService;
             _ordersService = ordersService;
             _httpContextAccessor = httpContextAccessor;
             _productsService = productsService;
+            _reviewsService = reviewsService;
         }
 
         [HttpPost]
@@ -46,9 +49,10 @@ namespace TECH.Controllers
                         {
                             var ordersDetailModelView = new OrdersDetailModelView();
                             ordersDetailModelView.order_id = result;
-                            ordersDetailModelView.product_id = item.product_id;
+                            ordersDetailModelView.product_id = item.product_id;                            
                             ordersDetailModelView.color = item.color;
-                            ordersDetailModelView.price = item.price;
+                            var product = _productsService.GetByid(item.product_id.Value);
+                            ordersDetailModelView.price = Convert.ToInt32(product.price);
                             ordersDetailModelView.quantity = item.quantity;
                             _ordersService.AddOrderDetail(ordersDetailModelView);
                             _cartsService.Deleted(item.id);
@@ -153,7 +157,36 @@ namespace TECH.Controllers
             return Redirect("/home");
 
         }
+        public IActionResult ReviewOrderProduct(int orderId)
+        {
+            var data = new List<OrdersModelView>();
+            if (orderId > 0)
+            {
+                var order = _ordersService.GetByid(orderId);
+                if (order != null)
+                {
+                    var orderDetail = _ordersService.GetOrderDetails(orderId);
+                    if (orderDetail != null && orderDetail.Count > 0)
+                    {
+                        foreach (var item in orderDetail)
+                        {
+                            if (item.product_id.HasValue && item.product_id.Value > 0)
+                            {
+                                var product = _productsService.GetByid(item.product_id.Value);
+                                if (product != null)
+                                {
+                                    item.ProductModelView = product;
+                                }
 
+                            }
+                        }
+                        order.OrdersDetailModelView = orderDetail;
+                    }
+                    data.Add(order);
+                }                
+            }
+            return PartialView("ReivewsOrderProduct", data);
+        }
         public IActionResult OrderPay()
         {
             var ordersCartDetailModelView = new OrdersCartDetailModelView();
@@ -191,6 +224,44 @@ namespace TECH.Controllers
             return Redirect("/home");
             
         }
+
+        [HttpPost]
+        public JsonResult ReviewsPost(List<ReviewsModelView> reviewsPost)
+        {
+
+            var userString = _httpContextAccessor.HttpContext.Session.GetString("UserInfor");
+            var user = new UserModelView();
+            bool status = false;
+            if (userString != null)
+            {
+                if (reviewsPost != null && reviewsPost.Count > 0)
+                {
+                    foreach (var item in reviewsPost)
+                    {
+                        item.status = 0;
+                        _reviewsService.Add(item);
+                        _reviewsService.Save();
+                    }
+                    _ordersService.UpdateReview(reviewsPost[0].order_id.Value, 1);
+                    _ordersService.Save();
+                    status = true;
+                }
+                else
+                {
+                    status = false;
+                }
+            }
+            else
+            {
+                status = false;
+            }            
+
+            return Json(new
+            {
+                success = status
+            });
+        }
+
 
 
 
@@ -235,11 +306,22 @@ namespace TECH.Controllers
                 if (user != null)
                 {
                     cartsModelView.user_id = user.id;
+                    if (cartsModelView.product_id.HasValue && cartsModelView.product_id.Value > 0)
+                    {
+                        var product = _productsService.GetByid(cartsModelView.product_id.Value);
+                        if (product != null)
+                        {
+                            cartsModelView.price = Convert.ToInt32(product.price) * cartsModelView.quantity.Value;
+                            cartsModelView.pricestr = cartsModelView.price.HasValue && cartsModelView.price.Value > 0 ? cartsModelView.price.Value.ToString("#,###") : "";
+                        }
+                    }
+                   
                     var result = _cartsService.Update(cartsModelView);
                     _cartsService.Save();
                     return Json(new
                     {
-                        success = result
+                        success = result,
+                        Data= cartsModelView
                     });
                 }
             }

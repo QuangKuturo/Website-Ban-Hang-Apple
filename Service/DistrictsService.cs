@@ -67,7 +67,7 @@ namespace TECH.Service
         }
         public DistrictsModelView GetByName(string name)
         {
-            var data = _districtsRepository.FindAll(p => p.name.Contains(name)).FirstOrDefault();
+            var data = _districtsRepository.FindAll(p => p.name.ToLower().Contains(name.ToLower())).FirstOrDefault();
             if (data != null)
             {
                 var model = new DistrictsModelView()

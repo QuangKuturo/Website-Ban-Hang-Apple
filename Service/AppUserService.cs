@@ -8,6 +8,7 @@ using TECH.Areas.Admin.Models.Search;
 using TECH.Data.DatabaseEntity;
 using TECH.Reponsitory;
 using TECH.Utilities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TECH.Service
 {
@@ -23,13 +24,16 @@ namespace TECH.Service
         UserModelView UserLogin(UserModelView userModelView);
         bool UpdateDetailView(UserModelView view);
         UserModelView AppUserLogin(string userName,string passWord);
-
-        bool ChangePassWord(int userId, string current_password, string new_password);
+        UserModelView GetUserForEmailCode(string email, string code);
+        void UpdateAvartar(UserModelView view);
+        bool ChangePassWord(int userId, string current_password, string new_password, bool isCofirm = false);
 
         bool IsMailExist(string mail);
         bool IsPhoneExist(string phone);
         bool UpdateStatus(int id, int status);
         int GetCount();
+        List<UserModelView> GetUserSearch(string search);
+        bool UpdateCode(UserModelView view);
     }
 
     public class AppUserService : IAppUserService
@@ -43,7 +47,51 @@ namespace TECH.Service
             _unitOfWork = unitOfWork;
         }
 
-        public bool ChangePassWord(int userId, string current_password, string new_password)
+        public bool UpdateCode(UserModelView view)
+        {
+            try
+            {
+                var dataServer = _appUserRepository.FindById(view.id);
+                if (dataServer != null)
+                {
+                    dataServer.code = view.code;
+                    _appUserRepository.Update(dataServer);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+
+        public UserModelView GetUserForEmailCode(string email, string code)
+        {
+            var data = _appUserRepository.FindAll().Where(u => u.email == email.Trim() && u.code == code).FirstOrDefault();
+            if (data != null)
+            {
+                var model = new UserModelView()
+                {
+                    id = data.id,
+                    full_name = data.full_name,
+                    avatar = data.avatar,
+                    phone_number = data.phone_number,
+                    email = data.email,
+                    address = data.address,
+                    role = data.role,
+                    password = data.password,
+                    status = data.status,
+                    register_date = data.register_date
+                };
+                return model;
+            }
+            return null;
+        }
+
+        public bool ChangePassWord(int userId, string current_password, string new_password,bool isCofirm = false)
         {
             var modelUser = _appUserRepository.FindAll().Where(u => u.id == userId).FirstOrDefault();
             bool status = false;
@@ -52,6 +100,10 @@ namespace TECH.Service
                 if (modelUser.password == current_password)
                 {
                     modelUser.password = new_password;
+                    if (isCofirm == true)
+                    {
+                        modelUser.code = "";
+                    }
                     _appUserRepository.Update(modelUser);
                     status = true;
                 }
@@ -207,7 +259,24 @@ namespace TECH.Service
 
             return false;
         }
+        public void UpdateAvartar(UserModelView view)
+        {
+            try
+            {
+                var dataServer = _appUserRepository.FindById(view.id);
+                if (dataServer != null)
+                {
+                    dataServer.avatar = view.avatar;
+                    _appUserRepository.Update(dataServer);
+                  
+                }
+            }
+            catch (Exception ex)
+            {
+                //return false;
+            }
 
+        }
 
 
         public bool UpdateStatus(int id, int status)
@@ -262,6 +331,30 @@ namespace TECH.Service
             }
             return null;
         }
+
+        public List<UserModelView> GetUserSearch(string search)
+        {
+            var query = _appUserRepository.FindAll();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(c => c.full_name.ToLower().Trim().Contains(search.ToLower().Trim()) || c.phone_number.ToLower().Trim().Contains(search.ToLower().Trim()));
+                var data = query.Select(c => new UserModelView()
+                {
+                    full_name = (!string.IsNullOrEmpty(c.full_name) ? c.full_name : ""),
+                    id = c.id,
+                    phone_number = !string.IsNullOrEmpty(c.phone_number) ? c.phone_number : "",
+                    email = !string.IsNullOrEmpty(c.email) ? c.email : "",
+                    address = !string.IsNullOrEmpty(c.address) ? c.address : "",
+                    role = c.role,
+                    password = c.password,
+                    status = c.status,
+                    register_date = c.register_date,
+                }).ToList();
+                return data;
+            }
+            return null;
+        }
+
         public PagedResult<UserModelView> GetAllPaging(UserModelViewSearch userModelViewSearch)
         {
             try
@@ -275,7 +368,7 @@ namespace TECH.Service
                 
                 if (!string.IsNullOrEmpty(userModelViewSearch.name))
                 {
-                    query = query.Where(c => c.full_name == userModelViewSearch.name || c.email == userModelViewSearch.name || c.phone_number == userModelViewSearch.name);
+                    query = query.Where(c => c.full_name.ToLower().Contains(userModelViewSearch.name.ToLower()) || c.email.ToLower().Contains(userModelViewSearch.name.ToLower()) || c.phone_number.ToLower().Contains(userModelViewSearch.name.ToLower()));
                 }
 
                 int totalRow = query.Count();

@@ -27,7 +27,7 @@
                                 <tbody data-v-2e4f4844="">
                                     @foreach (var item in Model)
                                     {
-                                        decimal totalPrice = item.price.Value * item.quantity.Value;
+                                        decimal totalPrice = item.price.Value;
                                         string classQuantiy = item.product_id.Value.ToString();
 
                                         <tr data-v-2e4f4844="">
@@ -37,7 +37,7 @@
                                             <td data-v-2e4f4844="" class="product-name text-left">
                                                 <h3 data-v-2e4f4844="">@item.productModelView.name</h3>
                                             </td>
-                                            <td data-v-2e4f4844="" class="price">@item.price.Value.ToString("#,###")<i data-v-2e4f4844="">đ</i></td>
+                                            <td data-v-2e4f4844="" class="price">@Convert.ToInt32(item.productModelView.price).ToString("#,###")<i data-v-2e4f4844=""> đ</i></td>
                                             <td data-v-2e4f4844="">
                                                 <div data-v-2e4f4844="" class="input-group input-quantity">
                                                     <div data-v-2e4f4844="" class="left-quantity"></div>
@@ -47,7 +47,7 @@
                                                     <div data-v-2e4f4844="" class="right-quantity"></div>
                                                 </div>
                                             </td>
-                                            <td data-v-2e4f4844="">@totalPrice.ToString("#,###") <i data-v-2e4f4844="">đ</i></td>
+                                            <td data-v-2e4f4844=""><span class="@classQuantiy">@item.price.Value.ToString("#,###")</span><i data-v-2e4f4844=""> đ</i></td>
                                             <td data-v-2e4f4844=""><button data-v-2e4f4844="" class="btn btn-danger text-white" onclick="deleteCart(@item.id)"><i data-v-2e4f4844="" class="ion-ios-trash text-white"></i></button></td>
                                         </tr>
                                     }
@@ -66,7 +66,35 @@
 }
 else
 {
-    <p style="text-align:center;font-size: 25px;">Vui lòng chọn sản phẩm</p>
+    <section class="ftco-section ftco-cart">
+   <div data-v-2e4f4844="" class="container">
+      <div data-v-2e4f4844="" class="row">
+         <h2 data-v-2e4f4844="" class="mb-3">Giỏ hàng (0)</h2>
+         <div data-v-2e4f4844="" class="col-md-12">
+            <div data-v-2e4f4844="" class="cart-list my-cart">
+               <div data-v-2e4f4844="" class="table-responsive">
+                  <table data-v-2e4f4844="" class="table table-striped">
+                     <thead data-v-2e4f4844="">
+                        <tr data-v-2e4f4844="">
+                           <th data-v-2e4f4844="">Hình ảnh</th>
+                           <th data-v-2e4f4844="">Tên sản phẩm</th>
+                           <th data-v-2e4f4844="">Giá tiền</th>
+                           <th data-v-2e4f4844="">Số lượng</th>
+                           <th data-v-2e4f4844="">Tổng</th>
+                           <th data-v-2e4f4844=""></th>
+                        </tr>
+                     </thead>
+                     <tbody data-v-2e4f4844=""></tbody>
+                  </table>
+               </div>
+            </div>
+            <a data-v-2e4f4844="" href="thanh-toan" class="btn btn-primary py-3 px-4 float-right mr-3 btn-checkout" style="display: none;">
+            Thanh toán
+            </a> <a data-v-2e4f4844="" href="/san-pham" class="btn btn-secondary py-3 px-4 float-right mr-3 btn-buy">Tiếp tục mua hàng</a>
+         </div>
+      </div>
+   </div>
+</section>
 }
 
 <div  id="CartsModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalTitle" class="modal fade" aria-modal="true">
@@ -156,9 +184,9 @@ else
                 // Loading('hiden');
             },
             success: function (response) {
-                //if (response.success) {
-                //    $("#CartsModal").modal("show");
-                //}
+                if (response.success && response.Data) {
+                    $("." + className).text(response.Data.pricestr);
+                }
                 //else{
                 //    $("#categoryModal").modal("show");
                 //}
@@ -188,6 +216,9 @@ else
                 // Loading('hiden');
             },
             success: function (response) {
+                if (response.success && response.Data) {
+                    $("." + className).text(response.Data.pricestr);
+                }
                 //if (response.success) {
                 //    $("#CartsModal").modal("show");
                 //}

@@ -131,6 +131,47 @@ namespace TECH.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetAllPaging(ReviewsViewModelSearch reviewsViewModelSearch)
         {
+            if (reviewsViewModelSearch != null)
+            {
+                if (!string.IsNullOrEmpty(reviewsViewModelSearch.name))
+                {
+                    string textSeach = reviewsViewModelSearch.name.Trim();
+                    OrdersViewModelSearch search = new OrdersViewModelSearch();
+                    search.PageIndex = 1;
+                    search.PageSize = 250;
+                    search.name = textSeach;
+                    var _order = _ordersService.GetAllPaging(search);
+                    if (_order != null && _order.Results != null && _order.Results.Count > 0)
+                    {
+                        var order_ids = _order.Results.Select(o => o.id).ToList();
+                        if (order_ids != null && order_ids.Count > 0)
+                        {
+                            reviewsViewModelSearch.order_ids = order_ids;
+                        }
+                    }
+                    else
+                    {
+
+                        var _user = _appUserService.GetUserSearch(textSeach);
+                        if (_user != null && _user.Count > 0)
+                        {
+                            var user_ids = _user.Select(u => u.id).ToList();
+                            if (user_ids != null && user_ids.Count > 0)
+                            {
+                                search.name = "";
+                                search.user_ids = user_ids;
+                                var order_ids = _ordersService.GetAllPaging(search);
+                                if (order_ids != null && order_ids.Results != null && order_ids.Results.Count > 0)
+                                {
+                                    reviewsViewModelSearch.order_ids = order_ids.Results.Select(o=>o.id).ToList();
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+
+            }
             var data = _reviewsService.GetAllPaging(reviewsViewModelSearch);
             foreach (var item in data.Results)
             {
