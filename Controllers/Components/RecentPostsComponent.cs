@@ -27,6 +27,7 @@ namespace TECH.Controllers.Components
             postsViewModelSearch.PageIndex = 1;
             postsViewModelSearch.PageSize = 4;
             var data = _postsService.GetAllPaging(postsViewModelSearch);
+            data.Results = data.Results.Where(p => p.status != 1).ToList();
             foreach (var item in data.Results)
             {
                 if (item.author.HasValue)

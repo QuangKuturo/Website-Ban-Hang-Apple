@@ -44,6 +44,10 @@ namespace TECH.Areas.Admin.Controllers
                     {
                         model.paymentstr = "VnPay";
                     }
+                    else if (model.payment == 3)
+                    {
+                        model.paymentstr = "Momo";
+                    }
                     else if (model.payment == 0)
                     {
                         model.paymentstr = "Mua trực tiếp";
@@ -273,6 +277,10 @@ namespace TECH.Areas.Admin.Controllers
                     else if (item.payment == 0)
                     {
                         item.paymentstr = "Mua trực tiếp";
+                    }
+                    else if (item.payment == 3)
+                    {
+                        item.paymentstr = "Momo";
                     }
                 }
 

@@ -49,6 +49,7 @@ namespace TECH.Controllers.Components
             var data = _reviewsService.GetAllPaging(reviewsViewModelSearch);
             if (data.Results != null && data.Results.Count > 0)
             {
+                data.Results = data.Results.Where(r => r.status != 1).ToList();
                 foreach (var item in data.Results)
                 {
                     if (item.order_id.HasValue && item.order_id.Value > 0)

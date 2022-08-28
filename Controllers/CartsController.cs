@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net.Mail;
 using TECH.Areas.Admin.Models;
 using TECH.Areas.Admin.Models.Search;
 using TECH.Models;
@@ -73,6 +74,156 @@ namespace TECH.Controllers
             }); 
         }
 
+        public void SendMail(string email, string code)
+        {
+
+            var html = @"
+    <div width='100%' style='margin: 0; padding: 0 !important; background-color: #f1f1f1;'>
+        <h3>Xin chào bạn. Cảm ơn bạn đã tin tưởng và đặt hàng website Hiếu Táo.</h3>
+        <center style='width: 100%; background-color: #f1f1f1;'>
+            <div style='margin: 0 auto;' class='m_431664471943874608email-container'>
+                <table align='center' role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='margin: auto;'>
+                    <tbody>
+                        <tr>
+                            <td valign='middle' class='m_431664471943874608hero m_431664471943874608bg_white' style='padding: 2em 0 2em 0;'>
+                                <table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'>
+                                    <tbody>
+                                        <tr>
+                                            <td style='padding: 0 2.5em; text-align: center;'>
+                                                <div class='m_431664471943874608text'>
+                                                    <h3>Đơn hàng của bạn</h3>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table class='m_431664471943874608bg_white' role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'>
+                                    <tbody>
+                                        <tr style='border-bottom: 1px solid rgba(0, 0, 0, 0.05); background-color: grey;'>
+                                            <th width='20%' style='text-align: center; padding: 0 2.5em; color: #000; padding-bottom: 20px;'>Tên sản phẩm</th>
+                                            <th width='45%' style='text-align: center; padding: 0 2.5em; color: #000; padding-bottom: 20px;'>Số lượng</th>
+                                            <th width='10%' style='text-align: center; padding: 0 2.5em; color: #000; padding-bottom: 20px;'>Tổng</th>
+                                        </tr>
+                                        <tr style='border-bottom: 1px solid rgba(0, 0, 0, 0.05);'>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'>Ipad Promax | màu null</p>
+                                            </td>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'>x1</p>
+                                            </td>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'>30000092</p>
+                                            </td>
+                                        </tr>
+                                        <tr style='border-bottom: 1px solid rgba(0, 0, 0, 0.05);'>
+                                            <td colspan='2' style='text-align: right; padding: 0 2.5em;'>
+                                                Tạm tính
+                                            </td>
+                                            <td style='padding: 0 2.5em;'>30000092<i>đ</i></td>
+                                        </tr>
+                                        <tr style='border-bottom: 1px solid rgba(0, 0, 0, 0.05);'>
+                                            <td colspan='2' style='text-align: right; padding: 0 2.5em;'>
+                                                Hình thức mua hàng
+                                            </td>
+                                            <td style='padding: 0 2.5em;'>Mua trực tiếp</td>
+                                        </tr>
+                                        <tr style='border-bottom: 1px solid rgba(0, 0, 0, 0.05);'>
+                                            <td colspan='2' style='text-align: right; padding: 0 2.5em;'>
+                                                Tổng phải thanh toán
+                                            </td>
+                                            <td style='padding: 0 2.5em;'>30000092<i>đ</i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </center>
+
+        <center style='width: 100%; background-color: #f1f1f1;'>
+            <div style='margin: 0 auto;' class='m_431664471943874608email-container'>
+                <table align='center' role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='margin: auto;'>
+                    <tbody>
+                        <tr>
+                            <td valign='middle' class='m_431664471943874608hero m_431664471943874608bg_white' style='padding: 2em 0 2em 0;'>
+                                <table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'>
+                                    <tbody>
+                                        <tr>
+                                            <td style='padding: 0 2.5em; text-align: center;'>
+                                                <div class='m_431664471943874608text'>
+                                                    <h3>Thông tin vận chuyển</h3>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table class='m_431664471943874608bg_white' role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'>
+                                    <tbody>
+                                        <tr style='border-bottom: 1px solid rgba(0, 0, 0, 0.05);'>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'>Họ và tên:</p>
+                                            </td>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'>nguyễn văn a</p>
+                                            </td>
+                                        </tr>
+                                        <tr style='border-bottom: 1px solid rgba(0, 0, 0, 0.05);'>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'>Số điện thoại:</p>
+                                            </td>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'>0345801983</p>
+                                            </td>
+                                        </tr>
+                                        <tr style='border-bottom: 1px solid rgba(0, 0, 0, 0.05);'>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'>Ghi chú:</p>
+                                            </td>
+                                            <td valign='middle' style='text-align: left; padding: 0 2.5em;'>
+                                                <p style='color: #000; font-size: 15px;'></p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </center>
+</div>
+";
+
+
+            MailMessage mail = new MailMessage();
+            mail.To.Add(email.Trim());
+            mail.From = new MailAddress("emcuahai@gmail.com");
+            mail.Subject = "Xác Thực Tài Khoản";
+            mail.Body = html;
+            mail.IsBodyHtml = true;
+            mail.Sender = new MailAddress("emcuahai@gmail.com");
+            SmtpClient smtp = new SmtpClient();
+            smtp.Port = 587;
+            smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
+            smtp.Host = "smtp.gmail.com";
+            smtp.Credentials = new System.Net.NetworkCredential("emcuahai@gmail.com", "tnquotkcftugcbve");
+            smtp.Send(mail);
+        }
+
+
+
+
         public IActionResult HistoryOrder()
         {
             var userString = _httpContextAccessor.HttpContext.Session.GetString("UserInfor");
@@ -97,6 +248,10 @@ namespace TECH.Controllers
                                 else if (item.payment == 2)
                                 {
                                     item.paymentstr = "VnPay";
+                                }
+                                else if (item.payment == 3)
+                                {
+                                    item.paymentstr = "Momo";
                                 }
                                 else if (item.payment == 0)
                                 {
@@ -214,12 +369,9 @@ namespace TECH.Controllers
                             }
                         }
                         ordersCartDetailModelView.CartsModelView = model;
+                        return View(ordersCartDetailModelView);
                     }
                 }
-            }
-            if (ordersCartDetailModelView != null)
-            {
-                return View(ordersCartDetailModelView);
             }
             return Redirect("/home");
             

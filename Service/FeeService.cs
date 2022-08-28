@@ -170,18 +170,28 @@ namespace TECH.Service
             try
             {
                 var query = _feeRepository.FindAll();
-
-                if (FeeModelViewSearch.city_id > 0)
+                if (FeeModelViewSearch.city_id == 0 &&
+                    FeeModelViewSearch.district_id == 0 &&
+                    FeeModelViewSearch.ward_id == 0 && !string.IsNullOrEmpty(FeeModelViewSearch.name))
                 {
-                    query = query.Where(c => c.city_id == FeeModelViewSearch.city_id);
+                    query = query.Where(c => c.city_id == FeeModelViewSearch.city_id &&
+                    c.district_id == FeeModelViewSearch.district_id &&
+                    c.ward_id == FeeModelViewSearch.ward_id);
                 }
-                if (FeeModelViewSearch.district_id > 0)
+                else
                 {
-                    query = query.Where(c => c.district_id == FeeModelViewSearch.district_id);
-                }
-                if (FeeModelViewSearch.ward_id > 0)
-                {
-                    query = query.Where(c => c.ward_id == FeeModelViewSearch.ward_id);
+                    if (FeeModelViewSearch.city_id > 0)
+                    {
+                        query = query.Where(c => c.city_id == FeeModelViewSearch.city_id);
+                    }
+                    if (FeeModelViewSearch.district_id > 0)
+                    {
+                        query = query.Where(c => c.district_id == FeeModelViewSearch.district_id);
+                    }
+                    if (FeeModelViewSearch.ward_id > 0)
+                    {
+                        query = query.Where(c => c.ward_id == FeeModelViewSearch.ward_id);
+                    }
                 }
 
                 int totalRow = query.Count();

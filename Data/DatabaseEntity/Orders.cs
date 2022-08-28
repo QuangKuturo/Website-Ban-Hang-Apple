@@ -21,6 +21,11 @@ namespace TECH.Data.DatabaseEntity
         [Column(TypeName = "nvarchar(500)")]
         public string? note { get; set; }
 
+        [Column(TypeName = "nvarchar(150)")]
+        public string? full_name { get; set; }
+        [Column(TypeName = "varchar(150)")]
+        public string? phone_number { get; set; }
+
         public int? review { get; set; }
 
         public string? ip_address { get; set; }

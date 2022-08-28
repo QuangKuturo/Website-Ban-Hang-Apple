@@ -27,6 +27,7 @@ namespace TECH.Controllers.Components
             var categoryModel = _categoryService.GetAllMenu();
             if (categoryModel != null && categoryModel.Count() > 0)
             {
+                categoryModel = categoryModel.Where(c => c.status != 1).ToList();
                 foreach (var item in categoryModel)
                 {
                     var countProduct = _productService.GetCountForCategory(item.id);
