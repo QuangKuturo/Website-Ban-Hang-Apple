@@ -1,0 +1,134 @@
+﻿@*@using TECH.Areas.Admin.Models
+@model OrdersModelView*@
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+<div data-v-c52b8308="" id="ReviewModal" tabindex="-1" role="dialog" aria-labelledby="ReviewModalTitle" class="modal fade" aria-modal="true">
+   <div data-v-c52b8308="" class="modal-dialog">
+      <form data-v-c52b8308="">
+         <div data-v-c52b8308="" class="modal-content">
+            <div data-v-c52b8308="" class="modal-header bg-custom">
+               <h5 data-v-c52b8308="" id="ReviewModalTitle" class="modal-title white">Đánh giá sản phẩm</h5>
+               <button data-v-c52b8308="" type="button" data-dismiss="modal" aria-label="Close" class="close"><span data-v-c52b8308="" aria-hidden="true">×</span></button>
+            </div>
+            <div data-v-c52b8308="" class="modal-body">
+               <div data-v-c52b8308="" class="modal-body">
+                  <div data-v-c52b8308="" class="row mt-3 brd-bottom">
+                     <div data-v-c52b8308="" class="col-md-3"><img data-v-c52b8308="" src="../../../public/images/product/product_avatar45c48cce2e2d7fbdea1afc51c7c6ad2662a30481140e2.png" alt="" class="img-style"></div>
+                     <div data-v-c52b8308="" class="col-md-8">
+                        <div data-v-c52b8308="">
+                           <p data-v-c52b8308="" class="name-product">AirPods 3</p>
+                        </div>
+                     </div>
+                     <div data-v-c52b8308="" class="col-md-12 mt-2">
+                        <div data-v-fde73a0c="" data-v-c52b8308="" class="vue-star-rating">
+                           <div data-v-fde73a0c="" class="sr-only"><span data-v-fde73a0c="">Rated 0 stars out of 5</span></div>
+                           <div data-v-fde73a0c="" class="vue-star-rating">                            
+                              <span data-v-fde73a0c="" class="vue-star-rating-rating-text star0"> 0</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div data-v-c52b8308="" class="col-md-12 mt-2"><textarea data-v-c52b8308="" rows="3" placeholder="Để lại đánh giá của bạn về sản phẩm này" id="comment0" class="form-control"></textarea></div>
+                  </div>
+                  <div data-v-c52b8308="" class="row mt-3 brd-bottom">
+                     <div data-v-c52b8308="" class="col-md-3"><img data-v-c52b8308="" src="../../../public/images/product/product_avatar45c48cce2e2d7fbdea1afc51c7c6ad2662a30481140e2.png" alt="" class="img-style"></div>
+                     <div data-v-c52b8308="" class="col-md-8">
+                        <div data-v-c52b8308="">
+                           <p data-v-c52b8308="" class="name-product">AirPods 3</p>
+                        </div>
+                     </div>
+                     <div data-v-c52b8308="" class="col-md-12 mt-2">
+                        <div data-v-fde73a0c="" data-v-c52b8308="" class="vue-star-rating">
+                           <div data-v-fde73a0c="" class="sr-only"><span data-v-fde73a0c="">Rated 0 stars out of 5</span></div>
+                           <div data-v-fde73a0c="" class="vue-star-rating">                            
+                              <span data-v-fde73a0c="" class="vue-star-rating-rating-text star0"> 0</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div data-v-c52b8308="" class="col-md-12 mt-2"><textarea data-v-c52b8308="" rows="3" placeholder="Để lại đánh giá của bạn về sản phẩm này" id="comment0" class="form-control"></textarea></div>
+                  </div>
+                  <div data-v-c52b8308="" class="row mt-3 brd-bottom">
+                     <div data-v-c52b8308="" class="col-md-3"><img data-v-c52b8308="" src="../../../public/images/product/product_avatar45c48cce2e2d7fbdea1afc51c7c6ad2662a30481140e2.png" alt="" class="img-style"></div>
+                     <div data-v-c52b8308="" class="col-md-8">
+                        <div data-v-c52b8308="">
+                           <p data-v-c52b8308="" class="name-product">AirPods 3</p>
+                        </div>
+                     </div>
+                     <div data-v-c52b8308="" class="col-md-12 mt-2">
+                        <div data-v-fde73a0c="" data-v-c52b8308="" class="vue-star-rating">
+                           <div data-v-fde73a0c="" class="sr-only"><span data-v-fde73a0c="">Rated 0 stars out of 5</span></div>
+                           <div data-v-fde73a0c="" class="vue-star-rating">                            
+                              <span data-v-fde73a0c="" class="vue-star-rating-rating-text star0"> 0</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div data-v-c52b8308="" class="col-md-12 mt-2"><textarea data-v-c52b8308="" rows="3" placeholder="Để lại đánh giá của bạn về sản phẩm này" id="comment0" class="form-control"></textarea></div>
+                  </div>
+               </div>
+            </div>
+            <div data-v-c52b8308="" class="modal-footer"><button data-v-c52b8308="" type="submit" class="text-center btn btn-primary">Gửi</button> <button data-v-c52b8308="" type="button" data-dismiss="modal" class="btn btn-secondary btn-3d">Đóng</button></div>
+         </div>
+      </form>
+   </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#ReviewModal").modal("show");
+
+        })
+
+        //function OrderDetail(id) {
+        //    $.ajax({
+        //        url: '/admin/orders/GetOrderDetail',
+        //        type: 'GET',
+        //        dataType: 'json',
+        //        data: {
+        //            orderId: id
+        //        },
+        //        beforeSend: function() {
+        //            // Loading('show');
+        //        },
+        //        complete: function() {
+        //            // Loading('hiden');
+        //        },
+        //        success: function(response) {
+        //            if (response.Data != null) {
+        //                $("#DetailModal").modal("show");
+        //                $(".madonhang").text(response.Data.code);
+        //                if (response.Data.OrdersDetailModelView != null && response.Data.OrdersDetailModelView.length > 0) {
+        //                    var trProductsHtml = "";
+        //                    for (var i = 0; i < response.Data.OrdersDetailModelView.length; i++) {
+        //                        trProductsHtml += "<tr>";
+        //                        var item = response.Data.OrdersDetailModelView[i];
+        //                        if (item.ProductModelView != null) {
+        //                            trProductsHtml += "<td>" + item.ProductModelView.name + "</td>";
+        //                        } else {
+        //                            trProductsHtml += "<td></td>";
+        //                        }
+        //                        trProductsHtml += "<td>" + item.quantity + "</td>";
+        //                        trProductsHtml += "<td>" + item.pricestr + " đ</td>";
+        //                        trProductsHtml += "</tr>";
+        //                    }
+        //                    if(response.Data.fee_ship > 0){
+        //                        $(".hist-fee-ship").show();
+        //                        $(".price-fee-ship").text(response.Data.fee_shipstr +" đ");
+        //                    }
+        //                    $(".total-price").text(response.Data.totalOrderDetailStr +" đ");
+        //                    $("#dataProduct").html(trProductsHtml);
+        //                    $(".into-money").text(response.Data.totalstr +" đ");
+        //                    $(".payment").text(response.Data.paymentstr);
+        //                }
+        //              }
+        //            }
+        //          })
+
+        //        }
+
+
+
+    </script>
+}
