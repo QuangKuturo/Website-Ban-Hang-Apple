@@ -1,0 +1,131 @@
+﻿@using TECH.Areas.Admin.Models
+@model List<OrdersModelView>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Model != null && Model.Count > 0)
+{
+    <section class="ftco-section">
+        <div class="parallax-img d-flex align-items-center">
+            <div data-v-c52b8308="" class="container">
+                <div data-v-c52b8308="" class="row">
+                    <h2 data-v-c52b8308="" class="mb-3">Lịch sử đơn hàng</h2>
+                    <div data-v-c52b8308="" class="col-md-12">
+                        <div data-v-c52b8308="" class="cart-list my-cart">
+                            <div data-v-c52b8308="" class="table-responsive">
+                                <table data-v-c52b8308="" class="table table-striped">
+                                    <thead data-v-c52b8308="">
+                                        <tr data-v-c52b8308="">
+                                            <th data-v-c52b8308="">Mã đơn hàng</th>
+                                            <th data-v-c52b8308="">Tổng đơn hàng</th>
+                                            <th data-v-c52b8308="">Hình thức mua</th>
+                                            <th data-v-c52b8308="">Ngày đặt hàng</th>
+                                            <th data-v-c52b8308="">Trạng thái đơn hàng</th>
+                                            <th data-v-c52b8308="">Đánh giá</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-v-c52b8308="">
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr data-v-c52b8308="">
+                                                <td data-v-c52b8308="" class="image-prod">
+                                                    <div data-v-c52b8308="">
+                                                        <a data-v-c52b8308="" href="javascript:void(0)" onclick="OrderDetail(@item.id)">
+                                                            @item.code
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td data-v-c52b8308="" class="product-name">
+                                                    <div data-v-c52b8308="">@item.total.Value.ToString("#,###")<i data-v-c52b8308="">đ</i></div>
+                                                </td>
+                                                <td data-v-c52b8308="" class="price">
+                                                    <div data-v-c52b8308="">@item.paymentstr</div>
+                                                </td>
+                                                <td data-v-c52b8308="">@item.created_atstr</td>
+                                                <td data-v-c52b8308="">
+                                                    <div data-v-c52b8308="" class="standby">@item.statusstr</div>
+                                                </td>
+                                                <td data-v-c52b8308="">
+                                                    <p data-v-c52b8308="">Chưa thể đánh giá</p>
+                                                </td>
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <partial name="OrderDetail" />
+}
+else
+{
+    <p style="text-align:center;font-size: 25px;">Không có lịch sử đơn hàng</p>
+}
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+
+        })
+
+        function OrderDetail(id) {
+            $.ajax({
+                url: '/admin/orders/GetOrderDetail',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    orderId: id
+                },
+                beforeSend: function() {
+                    // Loading('show');
+                },
+                complete: function() {
+                    // Loading('hiden');
+                },
+                success: function(response) {
+                    if (response.Data != null) {
+                        $("#DetailModal").modal("show");
+                        $(".madonhang").text(response.Data.code);
+                        if (response.Data.OrdersDetailModelView != null && response.Data.OrdersDetailModelView.length > 0) {
+                            var trProductsHtml = "";
+                            for (var i = 0; i < response.Data.OrdersDetailModelView.length; i++) {
+                                trProductsHtml += "<tr>";
+                                var item = response.Data.OrdersDetailModelView[i];
+                                if (item.ProductModelView != null) {
+                                    trProductsHtml += "<td>" + item.ProductModelView.name + "</td>";
+                                } else {
+                                    trProductsHtml += "<td></td>";
+                                }
+                                trProductsHtml += "<td>" + item.quantity + "</td>";
+                                trProductsHtml += "<td>" + item.pricestr + " đ</td>";
+                                trProductsHtml += "</tr>";
+                            }
+                            if(response.Data.fee_ship > 0){
+                                $(".hist-fee-ship").show();
+                                $(".price-fee-ship").text(response.Data.fee_shipstr +" đ");
+                            }
+                            $(".total-price").text(response.Data.totalOrderDetailStr +" đ");
+                            $("#dataProduct").html(trProductsHtml);
+                            $(".into-money").text(response.Data.totalstr +" đ");
+                            $(".payment").text(response.Data.paymentstr);
+                        }
+                      }
+                    }
+                  })
+
+                }
+
+
+
+    </script>
+}
