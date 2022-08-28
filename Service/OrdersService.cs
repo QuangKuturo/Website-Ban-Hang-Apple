@@ -106,6 +106,8 @@ namespace TECH.Service
                     payment = data.payment,
                     status = data.status,
                     total = data.total,
+                    full_name = data.full_name,
+                    phone_number = data.phone_number,
                     fee_ship = data.fee_ship,
                     created_at = data.created_at,
                     code=data.code
@@ -158,6 +160,8 @@ namespace TECH.Service
                         payment = view.payment,
                         status = 0,
                         total = view.total,
+                        full_name = view.full_name,
+                        phone_number = view.phone_number,
                         fee_ship = view.fee_ship,
                         created_at = DateTime.Now,
                         code = view.code
@@ -322,16 +326,22 @@ namespace TECH.Service
             {
                 var query = _ordersRepository.FindAll();
 
-                if (OrdersModelViewSearch.user_ids != null && OrdersModelViewSearch.user_ids.Count > 0)
+                //if (OrdersModelViewSearch.user_ids != null && OrdersModelViewSearch.user_ids.Count > 0)
+                //{
+                //    query = query.Where(c => OrdersModelViewSearch.user_ids.Contains(c.user_id.Value));
+                //}
+                //else
+                //{
+                //    if (!string.IsNullOrEmpty(OrdersModelViewSearch.name))
+                //    {
+                //        query = query.Where(c => c.code.ToLower().Contains(OrdersModelViewSearch.name.ToLower().Trim()));
+                //    }
+                //}
+                if (!string.IsNullOrEmpty(OrdersModelViewSearch.name))
                 {
-                    query = query.Where(c => OrdersModelViewSearch.user_ids.Contains(c.user_id.Value));
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(OrdersModelViewSearch.name))
-                    {
-                        query = query.Where(c => c.code.ToLower().Contains(OrdersModelViewSearch.name.ToLower().Trim()));
-                    }
+                    query = query.Where(c => c.code.ToLower().Contains(OrdersModelViewSearch.name.ToLower().Trim()) 
+                    || c.full_name.ToLower().Trim().Contains(OrdersModelViewSearch.name.ToLower().Trim())
+                    || c.phone_number.ToLower().Trim().Contains(OrdersModelViewSearch.name.ToLower().Trim()));
                 }
 
                 if (OrdersModelViewSearch.payment.HasValue)
@@ -355,6 +365,8 @@ namespace TECH.Service
                     note = p.note,
                     review = p.review,
                     payment = p.payment,
+                    full_name = p.full_name,
+                    phone_number = p.phone_number,
                     status = p.status,
                     total = p.total,
                     totalstr = p.total.HasValue && p.total.Value > 0? p.total.Value.ToString("#,###"):"",

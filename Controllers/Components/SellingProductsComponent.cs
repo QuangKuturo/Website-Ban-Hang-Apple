@@ -42,7 +42,7 @@ namespace TECH.Controllers.Components
                         item.ProductViews = null;
                     }
                 }
-                model = categoryModel.Results.ToList();
+                model = categoryModel.Results.Where(p=>p.status != 1).ToList();
             }
             return View(model);
         }

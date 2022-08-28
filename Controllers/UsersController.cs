@@ -185,17 +185,17 @@ namespace TECH.Areas.Admin.Controllers
 
             MailMessage mail = new MailMessage();
             mail.To.Add(email.Trim());
-            mail.From = new  MailAddress("emcuahai@gmail.com");
+            mail.From = new  MailAddress("quanghuynh2100@gmail.com");
             mail.Subject = "Xác Thực Tài Khoản";
             mail.Body = html;
             mail.IsBodyHtml = true;
-            mail.Sender = new MailAddress("emcuahai@gmail.com");
+            mail.Sender = new MailAddress("quanghuynh2100@gmail.com");
             SmtpClient smtp = new SmtpClient();
             smtp.Port =587;
             smtp.EnableSsl =true;
             smtp.UseDefaultCredentials =false;
             smtp.Host ="smtp.gmail.com";
-            smtp.Credentials = new System.Net.NetworkCredential("emcuahai@gmail.com", "tnquotkcftugcbve");
+            smtp.Credentials = new System.Net.NetworkCredential("quanghuynh2100@gmail.com", "jrhnhzhmkfwsxgcm");
             smtp.Send(mail);
         }
 

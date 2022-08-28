@@ -32,6 +32,7 @@ namespace TECH.Controllers
             var data = _productsService.GetAllPaging(productViewModelSearch);
             if (data != null && data.Results != null && data.Results.Count > 0)
             {
+                data.Results = data.Results.Where(p => p.status != 1).ToList();
                 foreach (var item in data.Results)
                 {
                     var review = _reviewsService.GetReviewForProduct(item.id);
@@ -82,6 +83,10 @@ namespace TECH.Controllers
                 ProductModelViewSearch.PageIndex = 1;
                 ProductModelViewSearch.PageSize = 20;
                  data = _productsService.GetAllPaging(ProductModelViewSearch);
+                if (data != null && data.Results != null && data.Results.Count > 0)
+                {
+                    data.Results = data.Results.Where(p => p.status != 1).ToList();
+                }
             }
             return View(data);
         }

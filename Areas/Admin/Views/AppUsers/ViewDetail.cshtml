@@ -64,21 +64,21 @@
                                         <div class="form-group">
                                             <label for="full_name">Họ tên</label>
                                             <input type="text" id="full_name" class="form-control" name="full_name" value="@Model.full_name">
-                                            <span class="text-danger"></span>
+                                            <label id="full_name-error" class="error" for="full_name" style="display: none;">Số điện thoại đã tồn tại</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="phone_number">Số điện thoại</label>
-                                            <input type="number" id="phone_number" class="form-control" name="phone_number" value="@Model.phone_number">
-                                            <span class="text-danger"></span>
+                                            <input type="text" id="phone_number" class="form-control" name="phone_number" value="@Model.phone_number">
+                                            <label id="phone_number-error" class="error phone_number-exist" for="phone_number" style="display: none;">Số điện thoại đã tồn tại</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <input type="email" id="email" class="form-control" name="email" value="@Model.email">
-                                            <span class="text-danger"></span>
+                                            <label id="email-error" class="error email-exist" for="email" style="display: none;">Số điện thoại đã tồn tại</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-12">
@@ -105,22 +105,35 @@
     <script src="~/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+
+            //jQuery.validator.addMethod("checkallowedchars", function (value) {
+            //    return /[\d`!@@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(value);
+            //}, "The field contains non-admitted characters");
+
+             jQuery.validator.addMethod("headphone", function (value, element) {
+                var vnf_regex = /((032|033|034|035|036|037|038|039|056|058|059|070|076|077|078|079|081|082|083|084|085|086|087|088|089|090|091|092|093|094|096|097|098|099)+([0-9]{7})\b)/g;
+                return vnf_regex.test(value);
+            });           
+
             $("#formUserDetail").validate({
                 rules:
                 {
                     full_name: {
                         required: true,
+                        //checkallowedchars:true,
+                        minlength: 8,
                     },
                     phone_number: {
                         required: true,
-                        //headphone: false,
+                        headphone: true,
                         minlength: 10,
                         min: 0,
-                        maxlength: 10,
+                        maxlength: 11,
                         number: isNaN
                     },
                     email: {
-                        required: true
+                        required: true,
+                        email:true
                     },
                     address: {
                         required: true
@@ -131,19 +144,29 @@
                 {
                     full_name: {
                         required: "Họ tên không được để trống",
+                        minlength: "Tên tối thiểu 8 kí tự",
+                        //checkallowedchars:"Họ tên không chứa số và kí tự đặc biệt"
                     },
                     phone_number: {
                         required: "Số điện thoại không được để trống",
-                        headphone: "Số điện thoại không hợp lệ"
+                        headphone: "Số điện thoại không hợp lệ",
+                        minlength:"Số điện thoại từ 10 đến 11 kí tự",
+                        maxlength: "Số điện thoại từ 10 đến 11 kí tự",
                     },
                     email: {
-                        required: "Email không được để trống"
+                        required: "Email không được để trống",
+                        email:"Email không đúng định dạng"
                     },
                     address: {
                         required: "Bạn chưa nhập địa chỉ"
                     }
                 },
                 submitHandler: function(form) {
+                    var checkAlloweChars = /[\d`!@@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test($("#full_name").val());
+                    if(checkAlloweChars == true){
+                        $("#full_name-error").show().text("Họ tên không chứa số và kí tự đặc biệt");
+                        return;
+                    }
 
                     var userView = {
                         id: $("#userId").val(),
@@ -160,18 +183,26 @@
                             UserModelView: userView
                         },
                         beforeSend: function() {
-                            //Loading('show');
+                            Loading('show');
                         },
                         complete: function() {
-                            //Loading('hiden');
+                            Loading('hiden');
                         },
                         success: function(response) {
                             if (response.success) {
-                                tedu.notify('Cập nhật dữ liệu thành công', 'success');
-                              
+                                tedu.notify('Cập nhật dữ liệu thành công', 'success');                              
                             }
                             else {
-                                tedu.notify('Cập nhật dữ liệu không thành công', 'error');
+                                if (response.isExistPhone){
+                                    $("#phone_number-error").show().text("Số điện thoại đã tồn tại");
+                                }
+                                else if (response.isExistEmail) {
+                                    $("#email-error").show().text("Email đã tồn tại");
+                                }
+                                else{
+                                    tedu.notify('Cập nhật dữ liệu không thành công', 'error');
+                                }
+                               
                             }
                         }
                     })

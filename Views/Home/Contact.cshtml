@@ -30,8 +30,9 @@
             <div data-v-77c39cb3="" class="col-lg-8">
                 @*<h2 data-v-77c39cb3="" class="mb-3">@Model.title</h2>*@
                 <div>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3835.738711613717!2d108.25104871416863!3d15.975015746200757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31421088e365cc75%3A0x6648fdda14970b2c!2zNDcwIMSQxrDhu51uZyBUcuG6p24gxJDhuqFpIE5naMSpYSwgSG_DoCBI4bqjaSwgTmfFqSBIw6BuaCBTxqFuLCDEkMOgIE7hurVuZyA1NTAwMDAsIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1653537904559!5m2!1sen!2s"
-                            width="100%" height="700" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+                    @*<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3835.738711613717!2d108.25104871416863!3d15.975015746200757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31421088e365cc75%3A0x6648fdda14970b2c!2zNDcwIMSQxrDhu51uZyBUcuG6p24gxJDhuqFpIE5naMSpYSwgSG_DoCBI4bqjaSwgTmfFqSBIw6BuaCBTxqFuLCDEkMOgIE7hurVuZyA1NTAwMDAsIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1653537904559!5m2!1sen!2s"
+                            width="100%" height="700" frameborder="0" style="border:0" allowfullscreen=""></iframe>*@
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.7894137689646!2d106.69792441368656!3d10.827421492286915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528f4a62fce9b%3A0xc99902aa1e26ef02!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBWxINuIExhbmc!5e0!3m2!1svi!2s!4v1661666653798!5m2!1svi!2s" width="100%" height="700" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
 
@@ -48,7 +49,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="number" placeholder="Số điện thoại" class="form-control " name="phone" id="phone"> <!---->
+                                    <input type="text" placeholder="Số điện thoại" class="form-control " name="phone" id="phone"> <!---->
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -93,7 +94,10 @@
         })
 
         function ValidateUser() {
-
+             jQuery.validator.addMethod("headphone", function (value, element) {
+                var vnf_regex = /((032|033|034|035|036|037|038|039|056|058|059|070|076|077|078|079|081|082|083|084|085|086|087|088|089|090|091|092|093|094|096|097|098|099)+([0-9]{7})\b)/g;
+                return vnf_regex.test(value);
+            });
             $("#contact").validate({
                 rules:
                 {
@@ -102,6 +106,11 @@
                     },
                     phone: {
                         required: true,
+                        headphone: true,
+                        minlength: 10,
+                        min: 0,
+                        maxlength: 11,
+                        number: isNaN
                     },
                     note: {
                         required: true
@@ -110,10 +119,15 @@
                 messages:
                 {
                     full_name: {
-                        required: "Họ tên không được để trống",
+                        required: "Số điện thoại không được để trống",
+                        headphone: "Số điện thoại không hợp lệ"
                     },
                     phone: {
                         required: "Số điện thoại không được để trống",
+                        minlength:"Số điện thoại từ 10 đến 11 kí tự",
+                        maxlength: "Số điện thoại từ 10 đến 11 kí tự",
+                        headphone:"Số điện thoại không hợp lệ",
+                        number:"Số điện thoại không hợp lệ"
                     },
                     note: {
                         required: "Ghi chú không được để trống"
@@ -131,6 +145,10 @@
                         data: { UserModelView: UserModelView },
                         beforeSend: function() {
                             // tedu.start//Loading();
+                            Loading('show');
+                        },
+                        complete: function () {
+                             Loading('hide');
                         },
                         success: function(response) {
                             if(response.success){
@@ -138,8 +156,7 @@
                             }
                         },
                         error: function() {
-                            tedu.notify('Has an error', 'error');
-                            tedu.stop//Loading();
+                            Loading('hide');
                         }
                     });
                 }

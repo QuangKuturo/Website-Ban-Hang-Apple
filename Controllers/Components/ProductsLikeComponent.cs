@@ -26,7 +26,7 @@ namespace TECH.Controllers.Components
                 var productRelate = _productService.GetProductLike(categoryId.Value);
                 if (productRelate != null && productRelate.Count > 0)
                 {
-                    lstdata = productRelate;
+                    lstdata = productRelate.Where(p=>p.status != 1).ToList();
                 }
             }
           

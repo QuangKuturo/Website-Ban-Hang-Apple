@@ -40,6 +40,9 @@ namespace TECH.Areas.Admin.Models
 
         public DateTime? created_at { get; set; }
 
+        public string? full_name { get; set; }
+        public string? phone_number { get; set; }
+
         public UserModelView UserModelView { get; set; }
 
         public List<OrdersDetailModelView> OrdersDetailModelView { get; set; }

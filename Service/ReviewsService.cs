@@ -167,8 +167,9 @@ namespace TECH.Service
         {
             try
             {
-                var query = _reviewsRepository.FindAll();              
-                
+                var query = _reviewsRepository.FindAll();
+                int totalRow = 0;
+                var data = new List<ReviewsModelView>();
                 if (ReviewsModelViewSearch.star.HasValue)
                 {
                     query = query.Where(c => c.star == ReviewsModelViewSearch.star.Value);
@@ -178,19 +179,42 @@ namespace TECH.Service
                     query = query.Where(c => ReviewsModelViewSearch.order_ids.Contains(c.order_id.Value));
                 }
 
-                int totalRow = query.Count();
-                query = query.Skip((ReviewsModelViewSearch.PageIndex - 1) * ReviewsModelViewSearch.PageSize).Take(ReviewsModelViewSearch.PageSize);
-                var data = query.Select(p => new ReviewsModelView()
+                if ((ReviewsModelViewSearch.order_ids == null || ReviewsModelViewSearch.order_ids.Count == 0)
+                    && !ReviewsModelViewSearch.star.HasValue 
+                    && !string.IsNullOrEmpty(ReviewsModelViewSearch.name))
                 {
-                    id = p.id,
-                    order_id = p.order_id,
-                    product_id = p.product_id,
-                    comment = p.comment,
-                    star = p.star,
-                    status = p.status,
-                    created_at = p.created_at,
-                    create_atstr = p.created_at.HasValue ? p.created_at.Value.ToString("hh:mm") + " - " + p.created_at.Value.ToString("dd/MM/yyyy") : "",
-                }).ToList();
+                    data = new List<ReviewsModelView>();
+                }
+                else
+                {
+                    totalRow = query.Count();
+                    query = query.Skip((ReviewsModelViewSearch.PageIndex - 1) * ReviewsModelViewSearch.PageSize).Take(ReviewsModelViewSearch.PageSize);
+                    data = query.Select(p => new ReviewsModelView()
+                    {
+                        id = p.id,
+                        order_id = p.order_id,
+                        product_id = p.product_id,
+                        comment = p.comment,
+                        star = p.star,
+                        status = p.status,
+                        created_at = p.created_at,
+                        create_atstr = p.created_at.HasValue ? p.created_at.Value.ToString("hh:mm") + " - " + p.created_at.Value.ToString("dd/MM/yyyy") : "",
+                    }).ToList();
+                }
+
+                //int totalRow = query.Count();
+                //query = query.Skip((ReviewsModelViewSearch.PageIndex - 1) * ReviewsModelViewSearch.PageSize).Take(ReviewsModelViewSearch.PageSize);
+                //var data = query.Select(p => new ReviewsModelView()
+                //{
+                //    id = p.id,
+                //    order_id = p.order_id,
+                //    product_id = p.product_id,
+                //    comment = p.comment,
+                //    star = p.star,
+                //    status = p.status,
+                //    created_at = p.created_at,
+                //    create_atstr = p.created_at.HasValue ? p.created_at.Value.ToString("hh:mm") + " - " + p.created_at.Value.ToString("dd/MM/yyyy") : "",
+                //}).ToList();
               
                 var pagingData = new PagedResult<ReviewsModelView>
                 {

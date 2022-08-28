@@ -9,30 +9,49 @@
     .online{
         display:none;
     }
+    input.error {
+        border-color: #f00 !important;
+    }
+
+    label.error {
+        clear: both;
+        color: #f00;
+        display: block;
+        text-align: left;
+        margin: unset;
+        padding: unset;
+        font-size: 13px;
+        font-weight: unset !important;
+        background: unset;
+    }
 </style>
-<section class="ftco-section">
-    <div class="container">
-        <form>
-            <div class="row">
-                <div class="col-md-5">
-                    <form class="billing-form">
+@section Styles{
+    <link href="~/public/customer/bootstrap-sweetalert-master/dist/sweetalert.css" rel="stylesheet" />
+}
+
+    <section class="ftco-section">
+        <div class="container">
+            <form id="form-submit" action="#" method="#">
+                <div class="row">
+                    <div class="col-md-5">
+                        @* <form class="billing-form">*@
                         <h3 class="mb-4 billing-heading">Thông tin mua hàng</h3>
                         <div class="row align-items-end">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="text" value="@Model.UserModelView.full_name" placeholder="Họ và tên" class="form-control" />
+                                    <input type="text" value="@Model.UserModelView.full_name" placeholder="Họ và tên" name="full_name" id="full_name" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="text" value="@Model.UserModelView.phone_number" placeholder="Số điện thoại" class="form-control" />
+                                    <input type="text" value="@Model.UserModelView.phone_number" name="phone_number" id="phone_number" placeholder="Số điện thoại" class="form-control" />
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" value="@(!string.IsNullOrEmpty(Model.UserModelView.address)?Model.UserModelView.address:"" )" placeholder="Địa chỉ" class="form-control" />
-                                </div>
-                            </div>
+                            @*<div class="col-md-12">
+                        <div class="form-group">
+                        <input type="text" value="@(!string.IsNullOrEmpty(Model.UserModelView.address)?Model.UserModelView.address:"" )" placeholder="Địa chỉ" name="address" id="address" class="form-control" />
+                        </div>
+                        </div>*@
                             <div class="col-md-12 online">
                                 <div class="form-group">
                                     <div class="select-wrap">
@@ -47,6 +66,7 @@
                                     <div class="select-wrap">
                                         @*<div class="icon"><span class="ion-ios-arrow-down"></span></div>*@
                                         <select name="district" id="district" class="form-control" onchange="GetWardsForDistrictId(this)">
+                                            <option value="">Chọn quân huyện</option>
                                         </select>
                                     </div>
                                 </div>
@@ -56,6 +76,7 @@
                                     <div class="select-wrap">
                                         @*<div class="icon"><span class="ion-ios-arrow-down"></span></div>*@
                                         <select name="wardsid" id="wardsid" class="form-control" onchange="GetWardsPrice(this)">
+                                            <option value="">Chọn phường/xã</option>
                                         </select>
                                     </div>
                                 </div>
@@ -64,66 +85,66 @@
                                 <div class="form-group"><textarea rows="4" placeholder="Ghi chú" id="note" class="form-control"></textarea></div>
                             </div>
                         </div>
-                    </form>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="cart-detail bg-light p-3 p-md-4">
-                                <h3 class="billing-heading mb-4">Phương thức mua hàng</h3>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <div class="radio">
-                                            <label><input type="radio" checked name="delivery" value="0" class="mr-2 delivery" /> Đến cửa hàng mua trực tiếp </label>
+                        @* </form>*@
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="cart-detail bg-light p-3 p-md-4">
+                                    <h3 class="billing-heading mb-4">Phương thức mua hàng</h3>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="radio">
+                                                <label><input type="radio" checked name="delivery" value="0" class="mr-2 delivery" /> Đến cửa hàng mua trực tiếp </label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="delivery" value="2" class="mr-2 delivery" />
-                                                Phương thức vận chuyển
-                                            </label>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="delivery" value="2" class="mr-2 delivery" />
+                                                    Phương thức vận chuyển
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-12 mt-3 online">
-                            <div class="cart-detail bg-light p-3 p-md-4">
-                                <h3 class="billing-heading mb-4">Thanh toán</h3>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <div class="radio">
-                                            <label><input checked type="radio" name="payment" value="1" class="mr-2 payment" /> Thanh toán khi nhận hàng </label>
+                            <div class="col-md-12 mt-3 online">
+                                <div class="cart-detail bg-light p-3 p-md-4">
+                                    <h3 class="billing-heading mb-4">Thanh toán</h3>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="radio">
+                                                <label><input checked type="radio" name="payment" value="1" class="mr-2 payment" /> Thanh toán khi nhận hàng </label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <div class="radio">
-                                            <label><input type="radio" name="payment" value="2" class="mr-2 payment" />Thanh toán qua VN Pay </label>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="radio">
+                                                <label><input type="radio" name="payment" value="2" class="mr-2 payment" />Thanh toán qua VN Pay </label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <div class="radio">
-                                            <label><input type="radio" name="payment" value="3" class="mr-2 payment" />Thanh toán bằng Momo </label>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="radio">
+                                                <label><input type="radio" name="payment" value="3" class="mr-2 payment" />Thanh toán bằng Momo </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-7 mt-5 pt-3">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="cart-detail cart-total bg-light p-3 p-md-4">
-                                <h3 class="mb-4 billing-heading">Đơn hàng</h3>
-                                <input type="hidden" class="total-product" value="@Model.CartsModelView.Sum(c=>c.quantity)"/>
-                                <table class="table table-striped" style="min-width: 100% !important;">
-                                    <tbody>
+                    <div class="col-md-7 mt-5 pt-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="cart-detail cart-total bg-light p-3 p-md-4">
+                                    <h3 class="mb-4 billing-heading">Đơn hàng</h3>
+                                    <input type="hidden" class="total-product" value="@Model.CartsModelView.Sum(c=>c.quantity)" />
+                                    <table class="table table-striped" style="min-width: 100% !important;">
+                                        <tbody>
                                         @foreach (var item in Model.CartsModelView)
                                         {
                                             decimal totalPrice = item.price.Value;
@@ -160,14 +181,14 @@
                                 </p>
                                 <hr />
                                 <p class="d-flex total">
-                                    <input type="hidden" class="price-fee"/>
-                                    <input type="hidden" class="fee-id"/>
-                                    <input type="hidden" class="total-price-goc" value="@_totalPrice"/>
-                                    <input type="hidden" class="total-price" value="@_totalPrice"/>
-                                    <input type="hidden" class="total-price-server" value="@_totalPrice"/>
+                                    <input type="hidden" class="price-fee" />
+                                    <input type="hidden" class="fee-id" />
+                                    <input type="hidden" class="total-price-goc" value="@_totalPrice" />
+                                    <input type="hidden" class="total-price" value="@_totalPrice" />
+                                    <input type="hidden" class="total-price-server" value="@_totalPrice" />
                                     <span>Tổng cộng</span> <span></span> <span></span> <span class="total-price-convert" style="text-align: right;">@_totalPrice.ToString("#,###")<i>đ</i></span>
                                 </p>
-                                <button type="button" class="btn btn-primary mt-2 btn-purchase btn-order">Đặt hàng</button> <a href="/gio-hang" class="btn btn-primary mt-2 btn-back">Quay về giỏ hàng</a>
+                                <button type="submit" class="btn btn-primary mt-2 btn-purchase btn-order">Đặt hàng</button> <a href="/gio-hang" class="btn btn-primary mt-2 btn-back">Quay về giỏ hàng</a>
                             </div>
                         </div>
                     </div>
@@ -176,51 +197,65 @@
         </form>
     </div>
 </section>
-<div  id="CartsModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalTitle" class="modal fade" aria-modal="true">
-   <div  role="document" class="modal-dialog">
-      <form id="form-submit" action="#">
-         <div  class="modal-content">
-            <div  class="modal-header bg-primary">
-               <h5  id="titleModal" class="modal-title white ">Bạn đã đặt hàng thành công</h5>
-               <button  type="button" data-dismiss="modal" aria-label="Close" class="close"><span  aria-hidden="true">×</span></button>
-            </div>
-            <div  class="modal-body">
-            </div>
-            <div  class="modal-footer">
-                @*<a href="/dang-nhap" class="btn btn-primary me-1 mb-1 btn-submit-format">OK</a>*@
-                <a href="/san-pham" class="btn btn-primary me-1 mb-1 btn-submit-format">OK</a>
+<div id="CartsModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalTitle" class="modal fade" aria-modal="true">
+    <div role="document" class="modal-dialog">
+        <form id="form-submit1" action="#">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="titleModal" class="modal-title white ">Bạn đã đặt hàng thành công</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
-         </div>
-      </form>
-   </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    @*<a href="/dang-nhap" class="btn btn-primary me-1 mb-1 btn-submit-format">OK</a>*@
+                    <a href="/san-pham" class="btn btn-primary me-1 mb-1 btn-submit-format">OK</a>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 @section Scripts{
+    <script src="~/public/customer/bootstrap-sweetalert-master/dist/sweetalert.min.js"></script>
     <script type="text/javascript">
-var self = this;
-self.payment = 0;
-        $(document).ready(function() {
+        var self = this;
+        self.payment = 0;
+        self.delivery = 0
+        
+        $(document).ready(function () {
 
             GetAllCities();
 
-            $(".delivery").change(function() {
+            $(".delivery").change(function () {
                 if ($(this).val() == 2) {
                     $('.online').show();
                 } else {
                     $('.online').hide();
-                     $(".feestr").text("Không có phí vận chuyển");
-                        $(".total-price-convert").text($(".total-price-goc").val() +" đ");
-                        $(".total-price-server").val($(".total-price-goc").val());
-                        $(".fee-id").val("");
-                        $(".price-fee").val("");
+                    $(".feestr").text("Không có phí vận chuyển");
+                    $(".total-price-convert").text($(".total-price-goc").val() + " đ");
+                    $(".total-price-server").val($(".total-price-goc").val());
+                    $(".fee-id").val("");
+                    $(".price-fee").val("");
                 }
             });
 
-            $(".payment").change(function() {
+            $(".delivery").change(function () {
+                self.delivery = $(this).val();
+                if(self.delivery == 0){
+                    self.payment = 0;
+                    $(".payment").val(0);
+                }
+                //else{
+                //    $(".payment").val(1);
+                //}
+            });
+
+            $(".payment").change(function () {
                 self.payment = $(this).val();
             });
 
-            $(".btn-order").click(function() {
+            $(".btn-order").click(function () {
                 AddOrder();
             });
 
@@ -240,13 +275,13 @@ self.payment = 0;
                     quantity: $("." + className).val(),
                     id: id
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     // Loading('show');
                 },
-                complete: function() {
+                complete: function () {
                     // Loading('hiden');
                 },
-                success: function(response) {
+                success: function (response) {
                     //if (response.success) {
                     //    $("#CartsModal").modal("show");
                     //}
@@ -264,13 +299,13 @@ self.payment = 0;
                 url: '/Admin/Fee/GetAllCity',
                 type: 'GET',
                 dataType: 'json',
-                beforeSend: function() {
+                beforeSend: function () {
                     //Loading('show');
                 },
-                complete: function() {
+                complete: function () {
                     //Loading('hiden');
                 },
-                success: function(response) {
+                success: function (response) {
                     var html = "<option value =\"\">Chọn thành phố</option>";
                     if (response.Data != null && response.Data.length > 0) {
                         self.Cities = response.Data;
@@ -294,13 +329,13 @@ self.payment = 0;
                     cityId: cityId
                 },
                 dataType: 'json',
-                beforeSend: function() {
+                beforeSend: function () {
                     //Loading('show');
                 },
-                complete: function() {
+                complete: function () {
                     // Loading('hiden');
                 },
-                success: function(response) {
+                success: function (response) {
 
                     var html = "<option value=\"\">Chọn quận/huyện</option>";
                     if (response.Data != null && response.Data.length > 0) {
@@ -311,10 +346,10 @@ self.payment = 0;
                         }
                     }
                     $(".feestr").text("Chưa có phí vận chuyển");
-                        $(".total-price-convert").text($(".total-price-goc").val() +" đ");
-                       $(".total-price-server").val($(".total-price-goc").val());
-                        $(".fee-id").val("");
-                        $(".price-fee").val("");
+                    $(".total-price-convert").text($(".total-price-goc").val() + " đ");
+                    $(".total-price-server").val($(".total-price-goc").val());
+                    $(".fee-id").val("");
+                    $(".price-fee").val("");
                     $("#district").html(html);
                 }
             })
@@ -328,37 +363,37 @@ self.payment = 0;
                 url: '/Admin/Fee/GetDetailFee',
                 type: 'GET',
                 data: {
-                    cityId:cityId,
+                    cityId: cityId,
                     districtId: districtId,
-                    wardsId:wardsid
+                    wardsId: wardsid
                 },
                 dataType: 'json',
-                beforeSend: function() {
+                beforeSend: function () {
                     //Loading('show');
                 },
-                complete: function() {
+                complete: function () {
                     // Loading('hiden');
                 },
-                success: function(response) {                  
+                success: function (response) {
                     if (response.Data != null && response.Data) {
-                        if(response.Data.feestr != null && response.Data.feestr !=""){
+                        if (response.Data.feestr != null && response.Data.feestr != "") {
                             $(".feestr").text(response.Data.feestr + " đ");
                             var totalprice = parseInt($(".total-price").val());
                             var priceConver = totalprice + response.Data.fee;
                             $(".price-fee").val(response.Data.fee);
                             $(".total-price-server").val(priceConver);
-                            $(".total-price-convert").text(priceConver.toLocaleString('en-US') +" đ");
+                            $(".total-price-convert").text(priceConver.toLocaleString('en-US') + " đ");
                             $(".fee-id").val(response.Data.id);
-                        }     
-                        else{
+                        }
+                        else {
                             $(".feestr").text("Chưa có phí vận chuyển");
                             $(".fee-id").val("");
                             $(".price-fee").val("");
                         }
                     }
-                    else{
+                    else {
                         $(".feestr").text("Chưa có phí vận chuyển");
-                        $(".total-price-convert").text($(".total-price-goc").val() +" đ");
+                        $(".total-price-convert").text($(".total-price-goc").val() + " đ");
                         $(".total-price-server").val($(".total-price-goc").val());
                         $(".fee-id").val("");
                         $(".price-fee").val("");
@@ -376,13 +411,13 @@ self.payment = 0;
                     districtId: districtId
                 },
                 dataType: 'json',
-                beforeSend: function() {
+                beforeSend: function () {
                     //Loading('show');
                 },
-                complete: function() {
+                complete: function () {
                     // Loading('hiden');
                 },
-                success: function(response) {
+                success: function (response) {
                     var html = "<option value=\"\">Chọn phường/xã</option>";
                     if (response.Data != null && response.Data.length > 0) {
                         /*  $("#wards").removeAttr("disabled");*/
@@ -392,47 +427,200 @@ self.payment = 0;
 
                         }
                     }
-                     $(".feestr").text("Chưa có phí vận chuyển");
-                        $(".total-price-convert").text($(".total-price-goc").val() +" đ");
-                        $(".total-price-server").val($(".total-price-goc").val());
-                        $(".fee-id").val("");
-                        $(".price-fee").val("");
+                    $(".feestr").text("Chưa có phí vận chuyển");
+                    $(".total-price-convert").text($(".total-price-goc").val() + " đ");
+                    $(".total-price-server").val($(".total-price-goc").val());
+                    $(".fee-id").val("");
+                    $(".price-fee").val("");
                     $("#wardsid").html(html);
                 }
             })
         }
 
-
-        function AddOrder() {
-            var _payment = $(".delivery").val();
-            var ordersModelView = {
-                note:$("#note").val(),
-                payment: self.payment,
-                total: $(".total-price-server").val(),
-                fee_ship:$(".price-fee").val()
-            };
-
-            $.ajax({
-                url: '/Carts/AddOrder',
-                type: 'POST',
-                data: {
-                    OrdersModelView : ordersModelView
-                },
-                dataType: 'json',
-                beforeSend: function() {
-                    //Loading('show');
-                },
-                complete: function() {
-                    // Loading('hiden');
-                },
-                success: function(response) {
-                    if(response.success){
-                        $("#CartsModal").modal("show");
+        function validateOnpay() {
+            //self.payment = $(".payment").val();
+            jQuery.validator.addMethod("headphone", function (value, element) {
+                    var vnf_regex = /((032|033|034|035|036|037|038|039|056|058|059|070|076|077|078|079|081|082|083|084|085|086|087|088|089|090|091|092|093|094|096|097|098|099)+([0-9]{7})\b)/g;
+                    return vnf_regex.test(value);
+                });
+            $("#form-submit").validate({
+                rules:
+                {
+                    cities: {
+                        required: true,
+                    },
+                    district: {
+                        required: true
+                    },
+                    wardsid: {
+                        required: true
+                    },
+                     full_name: {
+                        required: true,
+                        minlength: 10,
+                    },
+                    phone_number: {
+                        required: true,
+                        headphone: true,
+                        minlength: 10,
+                        maxlength: 11,
+                        number: isNaN
                     }
+
+                },
+                messages:
+                {
+                    cities: {
+                        required: "Bạn chưa chọn thành phố",
+                    },
+                    district: {
+                        required: "Bạn chưa chọn quận huyện"
+                    },
+                    wardsid: {
+                        required: "Bạn chưa chọn phường xã"
+                    },
+                    full_name: {
+                        required: "Họ tên không được để trống",
+                        minlength: "Họ tên tối thiểu 10 kí tự",
+                    },
+                    phone_number: {
+                        required: "Số điện thoại không được để trống",
+                        headphone: "Số điện thoại không hợp lệ",
+                        minlength: "Số điện thoại từ 10 đến 11 kí tự",
+                        maxlength: "Số điện thoại từ 10 đến 11 kí tự",
+                    }
+                },
+                submitHandler: function (form) {
+                    var _payment = $(".delivery").val();
+                    var ordersModelView = {
+                        note: $("#note").val(),
+                        payment: self.payment,
+                        total: $(".total-price-server").val(),
+                        fee_ship: $(".price-fee").val(),
+                        full_name: $("#full_name").val(),
+                        phone_number: $("#phone_number").val(),
+                    };
+
+                    $.ajax({
+                        url: '/Carts/AddOrder',
+                        type: 'POST',
+                        data: {
+                            OrdersModelView: ordersModelView
+                        },
+                        dataType: 'json',
+                        beforeSend: function () {
+                            Loading('show');
+                        },
+                        complete: function () {
+                            Loading('hiden');
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                // $("#CartsModal").modal("show");
+
+                                swal({
+                                    title: "Success!",
+                                    text: "Bạn đã đặt đơn hàng thành công.",
+                                    type: "success"
+                                }, function () {
+                                    window.location.href = "/san-pham";
+                                });
+
+                            }
+                        }
+                    })
+
                 }
-            })
+            });
+            
         }
 
-     
+
+
+        function AddOrder() {
+            debugger
+            if (self.delivery == 0) {
+                self.payment = 0;
+                 jQuery.validator.addMethod("headphone", function (value, element) {
+                    var vnf_regex = /((032|033|034|035|036|037|038|039|056|058|059|070|076|077|078|079|081|082|083|084|085|086|087|088|089|090|091|092|093|094|096|097|098|099)+([0-9]{7})\b)/g;
+                    return vnf_regex.test(value);
+                });
+
+                $("#form-submit").validate({
+                    rules:
+                    {
+                        full_name: {
+                            required: true,
+                            minlength: 10,
+                        },
+                        phone_number: {
+                            required: true,
+                            headphone: true,
+                            minlength: 10,
+                            maxlength: 11,
+                            number: isNaN
+                        }
+                    },
+                    messages:
+                    {
+                        full_name: {
+                            required: "Họ tên không được để trống",
+                            minlength: "Họ tên tối thiểu 10 kí tự",
+                        },
+                        phone_number: {
+                            required: "Số điện thoại không được để trống",
+                            headphone: "Số điện thoại không hợp lệ",
+                            minlength: "Số điện thoại từ 10 đến 11 kí tự",
+                            maxlength: "Số điện thoại từ 10 đến 11 kí tự",
+                        }
+                    },
+                    submitHandler: function (form) {
+                        var _payment = $(".delivery").val();
+                        var ordersModelView = {
+                            note: $("#note").val(),
+                            payment: self.payment,
+                            total: $(".total-price-server").val(),
+                            fee_ship: $(".price-fee").val(),
+                            full_name: $("#full_name").val(),
+                            phone_number: $("#phone_number").val(),
+                        };
+
+                        $.ajax({
+                            url: '/Carts/AddOrder',
+                            type: 'POST',
+                            data: {
+                                OrdersModelView: ordersModelView
+                            },
+                            dataType: 'json',
+                            beforeSend: function () {
+                                //Loading('show');
+                            },
+                            complete: function () {
+                                // Loading('hiden');
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    // $("#CartsModal").modal("show");
+
+                                    swal({
+                                        title: "Success!",
+                                        text: "Bạn đã đặt đơn hàng thành công.",
+                                        type: "success"
+                                    }, function () {
+                                        window.location.href = "/san-pham";
+                                    });
+
+                                }
+                            }
+                        })
+                    }
+                });
+            }
+            else{
+                validateOnpay();
+            }
+           
+
+        }
     </script>
 }

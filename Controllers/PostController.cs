@@ -24,18 +24,23 @@ namespace TECH.Controllers
             postsViewModelSearch.PageIndex = 1;
             postsViewModelSearch.PageSize = 10;
             var data = _postsService.GetAllPaging(postsViewModelSearch);
-            foreach (var item in data.Results)
+            if (data != null && data.Results != null && data.Results.Count > 0)
             {
-                if (item.author.HasValue)
+                data.Results = data.Results.Where(p => p.status != 1).ToList();
+                foreach (var item in data.Results)
                 {
-                    var appUser = _appUserService.GetByid(item.author.Value);
-                    if (appUser != null && !string.IsNullOrEmpty(appUser.full_name))
+                    if (item.author.HasValue)
                     {
-                        item.author_name = appUser.full_name;
+                        var appUser = _appUserService.GetByid(item.author.Value);
+                        if (appUser != null && !string.IsNullOrEmpty(appUser.full_name))
+                        {
+                            item.author_name = appUser.full_name;
+                        }
                     }
-                }
 
+                }
             }
+           
             return View(data);
         }
         public IActionResult DetailPost(int postId)
@@ -72,6 +77,10 @@ namespace TECH.Controllers
                 ProductModelViewSearch.PageIndex = 1;
                 ProductModelViewSearch.PageSize = 20;
                 data = _postsService.GetAllPaging(ProductModelViewSearch);
+                if (data != null && data.Results != null && data.Results.Count > 0)
+                {
+                    data.Results = data.Results.Where(p => p.status != 1).ToList();
+                }
             }
             return PartialView("PostSearch", data);
         }

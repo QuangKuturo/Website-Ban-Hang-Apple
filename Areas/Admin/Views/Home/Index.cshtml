@@ -4,6 +4,11 @@
     ViewData["Title"] = "Home Page";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .apexcharts-legend.apexcharts-align-center.position-bottom{
+        display:none;
+    }
+</style>
 <div class="page-heading">
     <h3>Trang thống kê</h3>
 </div>
@@ -137,17 +142,20 @@
                     })
                     colomun.push({
                         name:"Chờ xử lý:",
-                        data:TotalWaitingProgressing
+                        data:TotalWaitingProgressing,
+                        color:'#999999'
                     });
 
                     colomun.push({
                         name:"Đã hoàn thành:",
-                        data:TotalAccomplished
+                        data:TotalAccomplished,
+                        color: '#6AA84F'
                     });
 
                     colomun.push({
                         name:"Bị hủy:",
-                        data:Totalcancel
+                        data:Totalcancel,
+                        color: '#990000'
                     });
 
                     setTimeout(function() {

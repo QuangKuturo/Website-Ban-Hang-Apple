@@ -23,13 +23,18 @@
     height: 80px;
 }
 .btn-search-post{
-        height: 100%;
-    width: 46px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    right: 0;
-    cursor: pointer;
+        height: 95%;
+        width: 46px;
+        margin-top: 2px;
+        margin-right: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: 0;
+        cursor: pointer;
+        background: #fff;
+        /* border: 1px solid #ddd; */
+        border-left: unset;
         position: absolute;
 }
 </style>
@@ -99,6 +104,16 @@
                 
                // Search(textSearch);
             })
+            $(".text-search-post").keypress(function (e) {
+              if (e.which == 13) {
+                    var textSearch = $(".text-search-post").val();
+                    if (textSearch != "") {
+                        PostSearch(textSearch);
+                    }
+                return false;    //<---- Add this line
+              }
+            });
+            
 
 
     })

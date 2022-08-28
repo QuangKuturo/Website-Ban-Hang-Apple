@@ -101,6 +101,35 @@ namespace TECH.Areas.Admin.Controllers
                     var dataUser = _appUserService.GetByid(user.id);
                     if (dataUser != null)
                     {
+
+                        if (dataUser.email.ToLower().Trim() != UserModelView.email.ToLower().Trim())
+                        {
+                            bool isEmail = _appUserService.IsMailExist(UserModelView.email.ToLower().Trim());
+                            if (isEmail)
+                            {
+                                return Json(new
+                                {
+                                    success = false,
+                                    isExistEmail = true,
+                                    isExistPhone = false,
+                                });
+                            }
+                        }
+
+                        if (dataUser.phone_number.ToLower().Trim() != UserModelView.phone_number.ToLower().Trim())
+                        {
+                            bool isPhone = _appUserService.IsPhoneExist(UserModelView.phone_number.ToLower().Trim());
+                            if (isPhone)
+                            {
+                                return Json(new
+                                {
+                                    success = false,
+                                    isExistEmail = false,
+                                    isExistPhone = true,
+                                });
+                            }
+                        }
+
                         UserModelView.id = dataUser.id;
                         status = _appUserService.UpdateDetailView(UserModelView);
                         _appUserService.Save();
@@ -108,7 +137,9 @@ namespace TECH.Areas.Admin.Controllers
                         _httpContextAccessor.HttpContext.Session.SetString("UserInfor", JsonConvert.SerializeObject(dataUser));
                         return Json(new
                         {
-                            success = status
+                            success = status,
+                            isExistEmail = false,
+                            isExistPhone = false,
                         });
                     }                   
                 }               
