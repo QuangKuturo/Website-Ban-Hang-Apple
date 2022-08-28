@@ -171,12 +171,21 @@ namespace TECH.Service
         {
             try
             {
-                var query = _postsRepository.FindAll();              
-                
-                if (!string.IsNullOrEmpty(PostModelViewSearch.name))
+                var query = _postsRepository.FindAll();
+
+                if (PostModelViewSearch.author_ids != null && PostModelViewSearch.author_ids.Count > 0)
                 {
-                    query = query.Where(c => c.title == PostModelViewSearch.name);
+                    query = query.Where(c => PostModelViewSearch.author_ids.Contains(c.author.Value));
                 }
+                else
+                {
+                    if (!string.IsNullOrEmpty(PostModelViewSearch.name))
+                    {
+                        query = query.Where(c => c.title.ToLower().Trim().Contains(PostModelViewSearch.name.ToLower().Trim()));
+                    }
+                }
+
+               
 
                 int totalRow = query.Count();
                 query = query.Skip((PostModelViewSearch.PageIndex - 1) * PostModelViewSearch.PageSize).Take(PostModelViewSearch.PageSize);

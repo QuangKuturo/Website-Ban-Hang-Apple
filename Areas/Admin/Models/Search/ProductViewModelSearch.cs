@@ -9,5 +9,7 @@ namespace TECH.Areas.Admin.Models.Search
     {
         public string? name { get; set; }
         public int? categoryId { get; set; }
+        public int differentiate { get; set; }
+        
     }
 }

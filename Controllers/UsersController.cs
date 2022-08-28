@@ -26,7 +26,7 @@ namespace TECH.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            SendMail("emcuahai@gmail.com", "123456");
+           
             return View();
         }
         public IActionResult ForgotPassword()
@@ -44,6 +44,12 @@ namespace TECH.Areas.Admin.Controllers
                 if (data != null)
                 {
                     string code = DateTime.Now.Day.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + data.id.ToString();
+                    SendMail(email, code);
+                    _httpContextAccessor.HttpContext.Session.SetString("EmailComfirm", email);
+
+                    data.code = code;
+                    _appUserService.UpdateCode(data);
+                    _appUserService.Save();
                     status = true;
                 }
             }
@@ -53,62 +59,134 @@ namespace TECH.Areas.Admin.Controllers
             });
         }
 
+        public IActionResult ChangeNewPassWord()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public JsonResult ChangeNewServerPassWord(string newpassword)
+        {
+            bool status = false;
+            if (!string.IsNullOrEmpty(newpassword))
+            {
+                var data = _httpContextAccessor.HttpContext.Session.GetString("UserComfirmEd");
+
+                if (data != null)
+                {
+                   var  user = JsonConvert.DeserializeObject<UserModelView>(data);
+                    var model = _appUserService.ChangePassWord(user.id, user.password, newpassword,true);
+                    _appUserService.Save();
+
+                    _httpContextAccessor.HttpContext.Session.Remove("UserComfirmEd");
+
+                  var isComfirmEd =  _httpContextAccessor.HttpContext.Session.GetString("EmailComfirm");
+                    if (!string.IsNullOrEmpty(isComfirmEd))
+                    {
+                        _httpContextAccessor.HttpContext.Session.Remove("EmailComfirm");
+                    }
+
+                    return Json(new
+                    {
+                        success = model
+                    });
+                }
+            
+            }
+            return Json(new
+            {
+                success = status
+            });
+        }
+
+
+
+        [HttpGet]
+        public JsonResult CheckAccuracy(string codeaccuracy)
+        {
+            bool status = false;
+            var email = _httpContextAccessor.HttpContext.Session.GetString("EmailComfirm");
+            if (!string.IsNullOrEmpty(codeaccuracy) && !string.IsNullOrEmpty(email))
+            {
+                var data = _appUserService.GetUserForEmailCode(email, codeaccuracy);
+                if (data != null)
+                {
+                    _httpContextAccessor.HttpContext.Session.SetString("UserComfirmEd", JsonConvert.SerializeObject(data));
+                    status = true;
+                }
+            }
+            return Json(new
+            {
+                success = status
+            });
+        }
+
+
+
+
         public void SendMail(string email,string code)
         {
 
-            var html = @"<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-   <tbody>
-      <tr>
-         <td bgcolor='#FFA73B' align='center'>
-            <table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width:600px'>
-               <tbody>
-                  <tr>
-                     <td align='center' valign='top' style='padding:40px 10px 40px 10px'> </td>
-                  </tr>
-               </tbody>
-            </table>
-         </td>
-      </tr>
-      <tr>
-         <td bgcolor='#f4f4f4' align='center' style='padding:30px 10px 0px 10px'>
-            <table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width:600px'>
-               <tbody>
-                  <tr>
-                     <td bgcolor='#ffffff' align='center' style='padding:20px 30px 40px 30px;color:#666666;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:18px;font-weight:400;line-height:25px'>
-                        <p style='margin:0'> Mã xác thực của bạn là:
-                           <span>
-                           </span>
-                        </p>
-                        <h4>"+code+@"</h4>
-                        <p></p>
-                     </td>
-                  </tr>
-               </tbody>
-            </table>
-         </td>
-      </tr>
-      <tr>
-         <td bgcolor='#f4f4f4' align='center' style='padding:30px 10px 0px 10px'>
-            <table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width:600px'>
-               <tbody>
-                  <tr>
-                     <td bgcolor='#FFECD1' align='center' style='padding:30px 30px 30px 30px;border-radius:4px 4px 4px 4px;color:#666666;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:18px;font-weight:400;line-height:25px'>
-                        <h2 style='font-size:20px;font-weight:400;color:#111111;margin:0'></h2>
-                        <p style='margin:0'><a href='#m_-6636688018350923114_' style='color:#ffa73b'></a></p>
-                     </td>
-                  </tr>
-               </tbody>
-            </table>
-         </td>
-      </tr>
-   </tbody>
-</table>";
+            var html = "<div style=\"background-color:#f4f4f4;margin:0!important;padding:0!important\">"+
+   "<div style=\"display:none;font-size:1px;color:#fefefe;line-height:1px;font-family:'Lato',Helvetica,Arial,sans-serif;max-height:0px;max-width:0px;opacity:0;overflow:hidden\">" +
+   "</div>" +
+   "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">" +
+     " <tbody>" +
+        " <tr> " +
+           "<td bgcolor=\"#FFA73B\" align=\"center\">" +
+              "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:600px\">" +
+                "<tbody>" +
+                     "<tr>" +
+                       " <td align=\"center\" valign=\"top\" style=\"padding:40px 10px 40px 10px\"> </td>" +
+                     "</tr> " +
+                  "</tbody> " +
+               "</table> " +
+            "</td> " +
+        " </tr> " +
+        " <tr> " +
+           " <td bgcolor=\"#f4f4f4\" align=\"center\" style=\"padding:30px 10px 0px 10px\">" +
+             "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:600px\">" +
+                 " <tbody>" +
+                  " <tr>" +
+                      "  <td bgcolor=\"#ffffff\" align=\"center\" style=\"padding:20px 30px 40px 30px;color:#666666;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:18px;font-weight:400;line-height:25px\">" +
+                         "  <p style=\"margin:0\"> Mã xác thực của bạn là:" +
+                          "    <span>" +
+                             " </span>" +
+                          " </p>" +
+                          " <h4>"+ code + "</h4>" +
+                          " <p></p>" +
+                      "  </td>" +
+                    " </tr>" +
+                "  </tbody>" +
+              " </table>" +
+            "</td>" +
+        " </tr>" +
+        " <tr>" +
+           "  <td bgcolor=\"#f4f4f4\" align=\"center\" style=\"padding:30px 10px 0px 10px\">" +
+               " <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:600px\">" +
+                "  <tbody>" +
+                "     <tr>" +
+                    "    <td bgcolor=\"#FFECD1\" align=\"center\" style=\"padding:30px 30px 30px 30px;border-radius:4px 4px 4px 4px;color:#666666;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:18px;font-weight:400;line-height:25px\">" +
+                       "    <h2 style=\"font-size:20px;font-weight:400;color:#111111;margin:0\"></h2>" +
+                       "    <p style=\"margin:0\"><a href=\"#m_7898227097373759377_\" style=\"color:#ffa73b\"></a></p>" +
+                       " </td>" +
+                    " </tr>" +
+                "  </tbody>" +
+              " </table>" +
+            "</td>" +
+       "  </tr>" +
+     " </tbody>" +
+  " </table>" +
+ " <div class=\"yj6qo\"></div>" +
+  " <div class=\"adL\"></div>" +
+"</div>";
 
 
             MailMessage mail = new MailMessage();
             mail.To.Add(email.Trim());
             mail.From = new  MailAddress("emcuahai@gmail.com");
-            mail.Subject = "test";
+            mail.Subject = "Xác Thực Tài Khoản";
             mail.Body = html;
             mail.IsBodyHtml = true;
             mail.Sender = new MailAddress("emcuahai@gmail.com");
@@ -123,7 +201,17 @@ namespace TECH.Areas.Admin.Controllers
 
         public IActionResult Accuracy()
         {
-            return View();
+            var email = _httpContextAccessor.HttpContext.Session.GetString("EmailComfirm");
+            if (!string.IsNullOrEmpty(email))
+            {
+                var data = new UserModelView()
+                {
+                    email = email,
+                };
+                return View(data);
+            }
+            return Redirect("/home");
+            
         }
 
         [HttpPost]

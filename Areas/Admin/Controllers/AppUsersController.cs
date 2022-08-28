@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using TECH.Areas.Admin.Models;
 using TECH.Areas.Admin.Models.Search;
 using TECH.Service;
@@ -10,11 +11,14 @@ namespace TECH.Areas.Admin.Controllers
     {
         private readonly IAppUserService _appUserService;
         public IHttpContextAccessor _httpContextAccessor;
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
         public AppUsersController(IAppUserService appUserService,
-             IHttpContextAccessor httpContextAccessor)
+             IHttpContextAccessor httpContextAccessor,
+             Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
             _appUserService = appUserService;
             _httpContextAccessor = httpContextAccessor;
+            _hostingEnvironment = hostingEnvironment;
         }
         public IActionResult Index()
         {
@@ -86,11 +90,34 @@ namespace TECH.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult UpdateViewDetail(UserModelView UserModelView)
         {
-            var result = _appUserService.UpdateDetailView(UserModelView);
-            _appUserService.Save();
+            bool status = false;
+            var userString = _httpContextAccessor.HttpContext.Session.GetString("UserInfor");
+            var model = new UserModelView();
+            if (userString != null)
+            {
+                var user = JsonConvert.DeserializeObject<UserModelView>(userString);
+                if (user != null)
+                {
+                    var dataUser = _appUserService.GetByid(user.id);
+                    if (dataUser != null)
+                    {
+                        UserModelView.id = dataUser.id;
+                        status = _appUserService.UpdateDetailView(UserModelView);
+                        _appUserService.Save();
+                        dataUser = _appUserService.GetByid(user.id);
+                        _httpContextAccessor.HttpContext.Session.SetString("UserInfor", JsonConvert.SerializeObject(dataUser));
+                        return Json(new
+                        {
+                            success = status
+                        });
+                    }                   
+                }               
+            }
+
+           
             return Json(new
             {
-                success = result
+                success = status
             });
         }
 
@@ -166,6 +193,78 @@ namespace TECH.Areas.Admin.Controllers
         //        success = isphone
         //    }) ;
         //}
+
+
+        [HttpPost]
+        public IActionResult UploadImageAvartar()
+        {
+            var userString = _httpContextAccessor.HttpContext.Session.GetString("UserInfor");
+            if (!string.IsNullOrEmpty(userString))
+            {
+                var model = new UserModelView();
+                var user = JsonConvert.DeserializeObject<UserModelView>(userString);
+                if (user != null)
+                {
+                    var dataUser = _appUserService.GetByid(user.id);
+                    if (dataUser != null)
+                    {
+                        var _lstImageName = new List<string>();
+                        var files = Request.Form.Files;
+                        if (files != null && files.Count > 0)
+                        {
+                            var imageFolder = $@"\avartar\";
+
+                            string folder = _hostingEnvironment.WebRootPath + imageFolder;
+
+                            if (!Directory.Exists(folder))
+                            {
+                                Directory.CreateDirectory(folder);
+                            }
+
+
+                            foreach (var itemFile in files)
+                            {
+                                string fileNameFormat = Regex.Replace(itemFile.FileName.ToLower(), @"\s+", "");
+                                string filePath = Path.Combine(folder, fileNameFormat);
+                                if (!System.IO.File.Exists(filePath))
+                                {
+                                    _lstImageName.Add(fileNameFormat);
+                                    using (FileStream fs = System.IO.File.Create(filePath))
+                                    {
+                                        itemFile.CopyTo(fs);
+                                        fs.Flush();
+                                    }
+                                }
+                            }
+                        }
+                      
+
+                        if (_lstImageName != null && _lstImageName.Count > 0)
+                        {
+                            foreach (var item in _lstImageName)
+                            {
+                                var userModelView = new UserModelView();
+                                userModelView.avatar = item;                               
+                                userModelView.id = dataUser.id;
+                                _appUserService.UpdateAvartar(userModelView);
+                                _appUserService.Save();
+                                user.avatar = item;
+                            }
+
+                        }
+
+                        _httpContextAccessor.HttpContext.Session.SetString("UserInfor", JsonConvert.SerializeObject(user));
+                    }
+                }
+            }
+            return Json(new
+            {
+                success = true
+            });
+
+        }
+
+
 
 
 

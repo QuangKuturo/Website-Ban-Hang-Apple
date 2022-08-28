@@ -12,21 +12,39 @@ namespace TECH.Controllers
     {
         private readonly IProductsService _productsService;
         private readonly ICategoryService _categoryService;
+        private readonly IReviewsService _reviewsService;
         public ProductController(IProductsService productsService,
-          ICategoryService categoryService)
+          ICategoryService categoryService,
+          IReviewsService reviewsService)
         {
             _productsService = productsService;
             _categoryService = categoryService;
+            _reviewsService = reviewsService;
         }
 
         public IActionResult ProductCategory(int categoryId)
         {
             var productViewModelSearch = new ProductViewModelSearch();
             productViewModelSearch.PageIndex = 1;
-            productViewModelSearch.PageSize = 8;
+            productViewModelSearch.PageSize = 250;
 
             productViewModelSearch.categoryId = categoryId;
             var data = _productsService.GetAllPaging(productViewModelSearch);
+            if (data != null && data.Results != null && data.Results.Count > 0)
+            {
+                foreach (var item in data.Results)
+                {
+                    var review = _reviewsService.GetReviewForProduct(item.id);
+                    if (review != null && review.star > 0 && review.review_count > 0)
+                    {
+                        item.ProductViews = review;
+                    }
+                    else
+                    {
+                        item.ProductViews = null;
+                    }
+                }
+            }
             return View(data.Results.ToList());
         }
 

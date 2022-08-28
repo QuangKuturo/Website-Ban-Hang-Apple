@@ -26,6 +26,9 @@ namespace TECH.Data.DatabaseEntity
         [Column(TypeName = "varchar(500)")]
         public string? avatar { get; set; }
 
+        [Column(TypeName = "varchar(10)")]
+        public string? code { get; set; }
+
         public string? address { get; set; }
 
         public int? role { get; set; }

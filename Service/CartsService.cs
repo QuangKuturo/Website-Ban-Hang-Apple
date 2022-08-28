@@ -90,8 +90,9 @@ namespace TECH.Service
             {
                 var dataServer = _cartsRepository.FindById(view.id);
                 if (dataServer != null)
-                {
+                {                    
                     dataServer.quantity = view.quantity;
+                    dataServer.price = view.price.Value;
                     _cartsRepository.Update(dataServer);                                        
                     return true;
                 }

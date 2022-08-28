@@ -54,7 +54,7 @@ namespace TECH.Service
         }
         public CityModelView GetByName(string name)
         {
-            var data = _cityRepository.FindAll(p => p.name.Contains(name)).FirstOrDefault();
+            var data = _cityRepository.FindAll(p => p.name.ToLower().Trim().Contains(name.ToLower().Trim())).FirstOrDefault();
             if (data != null)
             {
                 var model = new CityModelView()

@@ -17,5 +17,6 @@ namespace TECH.Areas.Admin.Models
         public int? role { get; set; }  
         public int? status { get; set; }
         public DateTime? register_date { get; set; }
+        public string? code { get; set; }
     }
 }

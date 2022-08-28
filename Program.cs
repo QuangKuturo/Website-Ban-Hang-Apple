@@ -254,10 +254,10 @@ app.UseEndpoints(endpoints =>
   defaults: new { controller = "Home", action = "Contact" });
 
 
-   endpoints.MapControllerRoute(
-   name: "DangXuat",
-   pattern: "/dang-xuat",
-   defaults: new { controller = "Users", action = "LogOut" });
+    endpoints.MapControllerRoute(
+    name: "DangXuat",
+    pattern: "/dang-xuat",
+    defaults: new { controller = "Users", action = "LogOut" });
 
     endpoints.MapControllerRoute(
   name: "TimKiemProduct",
@@ -265,14 +265,30 @@ app.UseEndpoints(endpoints =>
   defaults: new { controller = "Product", action = "ProductSearch" });
 
     endpoints.MapControllerRoute(
+ name: "TimKiemPost",
+ pattern: "/bai-viet-tim-kiem/{*textSearch}",
+ defaults: new { controller = "Product", action = "ProductSearch" });
+
+    endpoints.MapControllerRoute(
    name: "DoiMatKhauWeb",
    pattern: "/doi-mat-khau",
    defaults: new { controller = "Users", action = "ChangePass" });
+
     endpoints.MapControllerRoute(
  name: "QuenMatKhau",
  pattern: "/quen-mat-khau",
  defaults: new { controller = "Users", action = "ForgotPassword" });
-   
+
+    endpoints.MapControllerRoute(
+name: "XacThuc",
+pattern: "/xac-thuc",
+defaults: new { controller = "Users", action = "Accuracy" });
+
+    endpoints.MapControllerRoute(
+    name: "TaoMatKhauMoi",
+    pattern: "/tao-mat-khau-moi",
+    defaults: new { controller = "Users", action = "ChangeNewPassWord" });
+
 
     endpoints.MapControllerRoute(
         name: "default",

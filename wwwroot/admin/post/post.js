@@ -147,10 +147,10 @@
         $('#paginationUL').twbsPagination({
             totalPages: totalsize,
             visiblePages: 7,
-            first: 'Đầu',
-            prev: 'Trước',
-            next: 'Tiếp',
-            last: 'Cuối',
+            first: '<<',
+            prev: '<',
+            next: '>',
+            last: '>>',
             onPageClick: function (event, p) {
                 tedu.configs.pageIndex = p;
                 setTimeout(callBack(), 200);

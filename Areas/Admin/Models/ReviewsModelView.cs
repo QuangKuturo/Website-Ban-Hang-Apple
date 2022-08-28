@@ -27,5 +27,11 @@ namespace TECH.Areas.Admin.Models
 
         public OrdersModelView? ordersModelView { get; set; }
     }
-   
+    public class ReviewStarModel
+    {
+        public int star { get; set; }
+        public int review_count { get; set; }
+    }
+
+
 }

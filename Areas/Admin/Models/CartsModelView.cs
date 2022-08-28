@@ -12,6 +12,7 @@ namespace TECH.Areas.Admin.Models
         public string? color { get; set; }
         public int? user_id { get; set; }
         public int? price { get; set; }
+        public string? pricestr { get; set; }
         public int? quantity { get; set; }
 
         public ProductModelView productModelView { get; set; }

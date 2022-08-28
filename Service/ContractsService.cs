@@ -127,7 +127,7 @@ namespace TECH.Service
                 
                 if (!string.IsNullOrEmpty(contractModelViewSearch.name))
                 {
-                    query = query.Where(c => c.full_name == contractModelViewSearch.name  || c.phone_number == contractModelViewSearch.name);
+                    query = query.Where(c => c.full_name.ToLower().Contains(contractModelViewSearch.name.ToLower())  || c.phone_number.ToLower().Contains(contractModelViewSearch.name.ToLower()));
                 }
 
                 int totalRow = query.Count();

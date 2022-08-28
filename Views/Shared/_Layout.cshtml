@@ -38,8 +38,13 @@
     <link rel="stylesheet" href="/public/customer/css/icomoon.css">
     <link rel="stylesheet" href="/public/customer/css/style.css">
     <link rel="stylesheet" href="/public/customer/css/custom-style.css">
-    
+     <link rel="stylesheet" href="/public/star-rating-js-main/dist/star-rating.css">
+     @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />*@
     <style>
+        .star-color {
+            color: #fcc72a;
+            font-size: 15px;
+        }
         .ftco-navbar-light{
             z-index: 6 !important;
         }
@@ -50,7 +55,7 @@
             border-radius: 0px 12px 12px 0px !important;
         }
     </style>
-
+     @RenderSection("Styles", required: false)
 </head>
 
 <body class="goto-here">
@@ -68,9 +73,9 @@
                         <li class="nav-item active"><a href="/" class="nav-link">Trang chủ</a></li>
                         <li class="nav-item"><a href="gioi-thieu" class="nav-link">Giới thiệu</a></li>
                         <li class="nav-item"><a href="/san-pham" class="nav-link">Sản phẩm</a></li>
-                        <li class="nav-item dropdown">
+                       @* <li class="nav-item dropdown">
                             @await Component.InvokeAsync("CategoryMenuComponent")
-                        </li>
+                        </li>*@
                         <li class="nav-item"><a href="/bai-viet" class="nav-link">Bài viết</a></li>
                         <li class="nav-item"><a href="/lien-he-voi-chung-toi" class="nav-link">Liên hệ</a></li>
                         @if (user != null && user.role.HasValue && user.role.Value == 1)
@@ -308,18 +313,18 @@
             })
 
             $('.home-slider-2').owlCarousel({
-                loop: true,
+                loop:true,
                 autoplay: true,
                 margin: 0,
                 //animateOut: 'fadeOut',
                 //animateIn: 'fadeIn',
-                 autoplayTimeout: 5000,
-                 autoplaySpeed: 4000,
-                nav: false,
+                autoplayTimeout: 5000,
+                autoplaySpeed: 4000,
+                nav: true,
                 //autoplayHoverPause: false,
                 items: 1,
-                navText: false,
-                dots: false,
+                navText: ["<img src='https://bizweb.dktcdn.net/100/112/815/themes/152840/assets/back-arrow.png?1479748613431'>","<img src='https://bizweb.dktcdn.net/100/112/815/themes/152840/assets/back-arrow.png?1479748613431'>"],
+                dots: true,
                 responsive: {
                     0: {
                         items: 1

@@ -166,23 +166,28 @@ namespace TECH.Areas.Admin.Controllers
         {
             if (!string.IsNullOrEmpty(feeViewModelSearch.name))
             {
-                var city = _cityService.GetByName(feeViewModelSearch.name);
+                var city = _cityService.GetByName(feeViewModelSearch.name.Trim());
                 if (city != null)
                 {
                     feeViewModelSearch.city_id = city.id;
                 }
-                var district = _districtsService.GetByName(feeViewModelSearch.name);
-                if (district != null)
+                else
                 {
-                    feeViewModelSearch.district_id = district.id;
+                    var district = _districtsService.GetByName(feeViewModelSearch.name.Trim());
+                    if (district != null)
+                    {
+                        feeViewModelSearch.district_id = district.id;
+                    }
+                    else
+                    {
+                        var wards = _wardsService.GetByName(feeViewModelSearch.name.Trim());
+                        if (wards != null)
+                        {
+                            feeViewModelSearch.ward_id = wards.id;
+                        }
+                    }
                 }
-
-                var wards = _wardsService.GetByName(feeViewModelSearch.name);
-                if (wards != null)
-                {
-                    feeViewModelSearch.ward_id = wards.id;
-                }
-
+                
             }
             var data = _feeService.GetAllPaging(feeViewModelSearch);
             if (data != null && data.Results != null && data.Results.Count > 0)

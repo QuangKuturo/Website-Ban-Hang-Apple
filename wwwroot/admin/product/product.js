@@ -142,10 +142,10 @@
         $('#paginationUL').twbsPagination({
             totalPages: totalsize,
             visiblePages: 7,
-            first: 'Đầu',
-            prev: 'Trước',
-            next: 'Tiếp',
-            last: 'Cuối',
+            first: '<<',
+            prev: '<',
+            next: '>',
+            last: '>>',
             onPageClick: function (event, p) {
                 tedu.configs.pageIndex = p;
                 setTimeout(callBack(), 200);
@@ -538,7 +538,8 @@
                 }
                 else {
                     if (response.isNameExist) {
-                        $(".product-name-exist").show().text("Phone đã tồn tại");
+                        tedu.notify('Tên đã tồn tại', 'error');
+                        //$(".product-name-exist").show().text("Tên đã tồn tại");
                     }
                 }
             }
@@ -632,9 +633,9 @@
                 productspecifications: {
                     required: true
                 },
-                productendow: {
-                    required: true
-                },
+                //productendow: {
+                //    required: true
+                //},
                 productshort_desc: {
                     required: true
                 },
@@ -672,9 +673,9 @@
                 productspecifications: {
                     required: "Bạn chưa nhập thông số kỹ thuật"
                 },
-                productendow: {
-                    required: "Bạn chưa nhập ưu đãi"
-                },
+                //productendow: {
+                //    required: "Bạn chưa nhập ưu đãi"
+                //},
                 productshort_desc: {
                     required: "Bạn chưa nhập mô tả ngắn"
                 },
@@ -710,7 +711,7 @@
         self.Product.quantity = $("#productquantity").val();
         self.Product.short_desc = $("#productshort_desc").val();
         self.Product.description = CKEDITOR.instances.productdescription.getData();
-        self.Product.specifications = $("#productspecifications").val();
+        self.Product.specifications = CKEDITOR.instances.productspecifications.getData();  //$("#productspecifications").val();
         self.Product.endow = $("#productendow").val();
         self.Product.differentiate = $("#productnew").val();
     }
@@ -731,7 +732,8 @@
         $("#productquantity").val(view.quantity);
         $("#productshort_desc").val(view.short_desc);
         CKEDITOR.instances.productdescription.setData(view.description);
-        $("#productspecifications").val(view.specifications);
+        CKEDITOR.instances.productspecifications.setData(view.specifications);
+        /*$("#productspecifications").val(view.specifications);*/
         $("#productendow").val(view.endow);
         $(".box-image").css({ "background-image": "url('/product-image/" + view.avatar + "')", "display": "block" });  
     }
@@ -771,6 +773,7 @@
         self.GetAllCategories();
 
         CKEDITOR.replace('productdescription', {});
+        CKEDITOR.replace('productspecifications', {});
 
         $(".modal").on("hidden.bs.modal", function () {
             $(this).find('form').trigger('reset');

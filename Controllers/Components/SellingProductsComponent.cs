@@ -14,9 +14,11 @@ namespace TECH.Controllers.Components
     public class SellingProductsComponent : ViewComponent
     {
         private readonly IProductsService _productService;
-        public SellingProductsComponent(IProductsService productService)
+        private readonly IReviewsService _reviewsService;
+        public SellingProductsComponent(IProductsService productService, IReviewsService reviewsService)
         {
             _productService = productService;
+            _reviewsService = reviewsService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -28,6 +30,18 @@ namespace TECH.Controllers.Components
             var model = new List<ProductModelView>();
             if (categoryModel.Results != null && categoryModel.Results.Count > 0)
             {
+                foreach (var item in categoryModel.Results)
+                {
+                    var review = _reviewsService.GetReviewForProduct(item.id);
+                    if (review != null && review.star > 0 && review.review_count > 0)
+                    {
+                        item.ProductViews = review;
+                    }
+                    else
+                    {
+                        item.ProductViews = null;
+                    }
+                }
                 model = categoryModel.Results.ToList();
             }
             return View(model);
